@@ -4,200 +4,206 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arya Acharya - Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
 </head>
 
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-black text-gray-200">
 
-<div class="max-w-4xl mx-auto p-6 md:p-10 bg-white shadow-lg rounded-lg my-10">
+<!-- LEFT SIDE VIDEO -->
+<video autoplay muted loop preload="none" id="side-video-left">
+    <source src="sidevideo.mp4" type="video/mp4">
+</video>
+
+<!-- RIGHT SIDE VIDEO -->
+<video autoplay muted loop preload="none" id="side-video-right">
+    <source src="sidevideo.mp4" type="video/mp4">
+</video>
+
+<!-- DARK OVERLAY BEHIND MAIN CONTENT -->
+
+<div class="main-wrapper max-w-4xl mx-auto p-6 md:p-10 bg-black bg-opacity-70 backdrop-blur-xl shadow-2xl rounded-2xl my-10 relative z-10">
 
     <!-- Header -->
-    <header class="flex flex-col md:flex-row items-start md:items-center justify-between border-b border-gray-200 pb-6">
+    <header class="flex flex-col md:flex-row items-start md:items-center justify-between border-b border-gray-300 pb-6">
 
         <div>
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Arya Acharya</h1>
+            <h1 class="glow-name text-4xl md:text-5xl font-bold">
+                Arya Acharya
+            </h1>
 
             <div class="flex items-center mt-3">
-                <img
-                        src="christ-logo.png"
-                        alt="Christ University Logo"
-                        class="h-10 w-10 mr-3 object-contain"
-                >
-                <p class="text-lg text-gray-600">Christ University, Bangalore</p>
+                <img src="christ-logo.png" alt="Christ University Logo" class="h-10 w-10 mr-3 object-contain">
+                <p class="text-lg text-gray-700">Christ University, Bangalore</p>
             </div>
         </div>
 
         <div class="flex items-center space-x-4 mt-6 md:mt-0">
 
-            <a href="mailto:aryaacharya2500@gmail.com"
-               class="text-gray-500 hover:text-blue-600 transition-colors">
+            <!-- Mail -->
+            <a href="mailto:aryaacharya2500@gmail.com" class="icon-mail">
                 <i data-lucide="mail" class="w-6 h-6"></i>
             </a>
 
-            <a href="https://github.com/AryaKenway" target="_blank"
-               class="text-gray-500 hover:text-gray-900 transition-colors">
+            <!-- GitHub -->
+            <a href="https://github.com/AryaKenway" target="_blank" class="icon-github">
                 <i data-lucide="github" class="w-6 h-6"></i>
             </a>
 
-            <a href="https://www.linkedin.com/in/arya-acharya" target="_blank"
-               class="text-gray-500 hover:text-blue-700 transition-colors">
+            <!-- LinkedIn -->
+            <a href="https://www.linkedin.com/in/arya-acharya" target="_blank" class="icon-linkedin">
                 <i data-lucide="linkedin" class="w-6 h-6"></i>
             </a>
 
-            <a
-                    href="Arya_Acharya.pdf"
-                    target="_blank"
-                    class="ml-4 px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700 transition"
-            >
-                View Resume
+            <!-- LeetCode -->
+            <a href="https://leetcode.com/u/bxH9OUO7qp" target="_blank" class="icon-leetcode">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="w-6 h-6" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 3L10 10L17 17" />
+                    <path d="M7 7L3 12L7 17" />
+                    <circle cx="17" cy="12" r="3" />
+                </svg>
             </a>
 
+            <!-- Resume Button Stays Same -->
+            <!-- Resume -->
+            <a href="Arya_Acharya.pdf" target="_blank" class="icon-resume">
+                <i data-lucide="file-text" class="w-6 h-6"></i>
+            </a>
+
+
         </div>
+
     </header>
 
 
-    <!-- About Me -->
+    <!-- ABOUT -->
     <section class="mt-8">
-        <h2 class="text-2xl font-semibold mb-3">About Me</h2>
-        <p class="text-gray-700 mb-2">
-            I am a motivated student with a growing interest in interactive technologies and digital experience design.
-        </p>
-        <p class="text-gray-700 mb-2">
-            I enjoy building creative and functional projects that combine both technical and visual thinking.
-        </p>
-        <p class="text-gray-700 mb-2">
-            My work focuses on improving user experiences through practical implementation and experimentation.
-        </p>
-        <p class="text-gray-700 mb-2">
-            I’m constantly learning and upgrading my skills with hands-on project development.
-        </p>
-        <p class="text-gray-700">
-            Open to opportunities that challenge me and help expand my technical depth.
-        </p>
+        <h2 class="section-title">About Me</h2>
+        <p class="about-text">I am a motivated student with a growing interest in interactive technologies and digital experience design.</p>
+        <p class="about-text">I enjoy building creative and functional projects that combine both technical and visual thinking.</p>
+        <p class="about-text">My work focuses on improving user experiences through practical implementation and experimentation.</p>
+        <p class="about-text">I’m constantly learning and upgrading my skills with hands-on project development.</p>
+        <p class="about-text">Open to opportunities that challenge me and help expand my technical depth.</p>
     </section>
 
 
-    <!-- Skills Section -->
+    <!-- SKILLS -->
     <section class="mt-10 space-y-8">
 
         <!-- Proficiencies -->
         <div>
-            <h3 class="text-xl font-semibold mb-3">Proficiencies</h3>
+            <h3 class="section-subtitle">Proficiencies</h3>
             <div class="flex flex-wrap gap-2">
-                <span class="bg-blue-100 text-blue-800 text-sm px-4 py-1.5 rounded-full">Game Development</span>
-                <span class="bg-blue-100 text-blue-800 text-sm px-4 py-1.5 rounded-full">Game Design</span>
-                <span class="bg-blue-100 text-blue-800 text-sm px-4 py-1.5 rounded-full">Software Design Patterns</span>
-                <span class="bg-blue-100 text-blue-800 text-sm px-4 py-1.5 rounded-full">Database Management</span>
-                <span class="bg-blue-100 text-blue-800 text-sm px-4 py-1.5 rounded-full">Microcontroller Programming</span>
-                <span class="bg-purple-100 text-purple-800 text-sm px-4 py-1.5 rounded-full">Generative AI</span>
-                <span class="bg-purple-100 text-purple-800 text-sm px-4 py-1.5 rounded-full">Agentic AI</span>
-                <span class="bg-purple-100 text-purple-800 text-sm px-4 py-1.5 rounded-full">AI Task Automation</span>
-                <span class="bg-pink-100 text-pink-800 text-sm px-4 py-1.5 rounded-full">UX Design</span>
-                <span class="bg-pink-100 text-pink-800 text-sm px-4 py-1.5 rounded-full">Level Design</span>
-                <span class="bg-pink-100 text-pink-800 text-sm px-4 py-1.5 rounded-full">Particle Effects</span>
-                <span class="bg-pink-100 text-pink-800 text-sm px-4 py-1.5 rounded-full">Shader Graphs</span>
-                <span class="bg-gray-200 text-gray-800 text-sm px-4 py-1.5 rounded-full">Data Structures</span>
-                <span class="bg-cyan-100 text-cyan-800 text-sm px-4 py-1.5 rounded-full">SQL</span>
-                <span class="bg-gray-200 text-gray-800 text-sm px-4 py-1.5 rounded-full">Software Testing</span>
+                <span class="tag-game">Game Development</span>
+                <span class="tag-game">Game Design</span>
+                <span class="tag-software">Software Design Patterns</span>
+                <span class="tag-database">Database Management</span>
+                <span class="tag-hardware">Microcontroller Programming</span>
+                <span class="tag-ai">Generative AI</span>
+                <span class="tag-ai">Agentic AI</span>
+                <span class="tag-ai">AI Task Automation</span>
+                <span class="tag-ux">UX Design</span>
+                <span class="tag-ux">Level Design</span>
+                <span class="tag-vfx">Particle Effects</span>
+                <span class="tag-vfx">Shader Graphs</span>
+                <span class="tag-core">Data Structures</span>
+                <span class="tag-database">SQL</span>
+                <span class="tag-testing">Software Testing</span>
             </div>
         </div>
 
         <!-- Tools -->
         <div>
-            <h3 class="text-xl font-semibold mb-3">Tools</h3>
+            <h3 class="section-subtitle">Tools</h3>
             <div class="flex flex-wrap gap-2">
-                <span class="bg-green-100 text-green-800 text-sm px-4 py-1.5 rounded-full">Figma</span>
-                <span class="bg-green-100 text-green-800 text-sm px-4 py-1.5 rounded-full">Unity</span>
-                <span class="bg-green-100 text-green-800 text-sm px-4 py-1.5 rounded-full">Blender</span>
-                <span class="bg-orange-100 text-orange-800 text-sm px-4 py-1.5 rounded-full">Arduino IDE</span>
-                <span class="bg-orange-100 text-orange-800 text-sm px-4 py-1.5 rounded-full">Autodesk Tinkercad</span>
-                <span class="bg-indigo-100 text-indigo-800 text-sm px-4 py-1.5 rounded-full">.NET Framework</span>
-                <span class="bg-red-100 text-red-800 text-sm px-4 py-1.5 rounded-full">Selenium</span>
-                <span class="bg-gray-200 text-gray-800 text-sm px-4 py-1.5 rounded-full">Git</span>
+                <span class="tag-design">Figma</span>
+                <span class="tag-unity">Unity</span>
+                <span class="tag-unity">Blender</span>
+                <span class="tag-hardware">Arduino IDE</span>
+                <span class="tag-hardware">Autodesk Tinkercad</span>
+                <span class="tag-backend">.NET Framework</span>
+                <span class="tag-testing">Selenium</span>
+                <span class="tag-core">Git</span>
             </div>
         </div>
 
-        <!-- Developer Platforms  -->
+        <!-- Dev Platforms -->
         <div>
-            <h3 class="text-xl font-semibold mb-3">Developer Platforms</h3>
+            <h3 class="section-subtitle">Developer Platforms</h3>
             <div class="flex flex-wrap gap-2">
-                <span class="bg-black text-white text-sm px-4 py-1.5 rounded-full">GitHub</span>
-                <span class="bg-blue-100 text-blue-800 text-sm px-4 py-1.5 rounded-full">Jenkins</span>
-                <span class="bg-cyan-100 text-cyan-800 text-sm px-4 py-1.5 rounded-full">Docker</span>
-                <span class="bg-green-100 text-green-800 text-sm px-4 py-1.5 rounded-full">CI/CD Pipelines</span>
-                <span class="bg-green-100 text-green-800 text-sm px-4 py-1.5 rounded-full">DevOps Automation</span>
+                <span class="tag-git">GitHub</span>
+                <span class="tag-devops">Jenkins</span>
+                <span class="tag-devops">Docker</span>
+                <span class="tag-devops">CI/CD Pipelines</span>
+                <span class="tag-devops">DevOps Automation</span>
             </div>
         </div>
 
-        <!-- Programming Languages -->
+        <!-- Languages -->
         <div>
-            <h3 class="text-xl font-semibold mb-3">Programming Languages</h3>
+            <h3 class="section-subtitle">Programming Languages</h3>
             <div class="flex flex-wrap gap-2">
-                <span class="bg-gray-200 text-gray-800 text-sm px-4 py-1.5 rounded-full">C#</span>
-                <span class="bg-yellow-100 text-yellow-800 text-sm px-4 py-1.5 rounded-full">Java</span>
-                <span class="bg-gray-200 text-gray-800 text-sm px-4 py-1.5 rounded-full">C</span>
-                <span class="bg-orange-100 text-orange-800 text-sm px-4 py-1.5 rounded-full">HTML5</span>
-                <span class="bg-blue-100 text-blue-800 text-sm px-4 py-1.5 rounded-full">CSS</span>
-                <span class="bg-cyan-100 text-cyan-800 text-sm px-4 py-1.5 rounded-full">SQL</span>
+                <span class="tag-core">C#</span>
+                <span class="tag-core">Java</span>
+                <span class="tag-core">C</span>
+                <span class="tag-web">HTML5</span>
+                <span class="tag-web">CSS</span>
+                <span class="tag-database">SQL</span>
             </div>
         </div>
 
         <!-- Soft Skills -->
         <div>
-            <h3 class="text-xl font-semibold mb-3">Soft Skills</h3>
+            <h3 class="section-subtitle">Soft Skills</h3>
             <div class="flex flex-wrap gap-2">
-                <span class="bg-gray-100 text-gray-800 text-sm px-4 py-1.5 rounded-full">Problem Solving</span>
-                <span class="bg-gray-100 text-gray-800 text-sm px-4 py-1.5 rounded-full">Documentation</span>
-                <span class="bg-gray-100 text-gray-800 text-sm px-4 py-1.5 rounded-full">Collaboration</span>
-                <span class="bg-gray-100 text-gray-800 text-sm px-4 py-1.5 rounded-full">Attention to Detail</span>
+                <span class="tag-soft">Problem Solving</span>
+                <span class="tag-soft">Documentation</span>
+                <span class="tag-soft">Collaboration</span>
+                <span class="tag-soft">Attention to Detail</span>
             </div>
         </div>
 
     </section>
 
 
-    <!-- Work Experience -->
+    <!-- WORK EXPERIENCE -->
     <section class="mt-10">
-        <h2 class="text-2xl font-semibold mb-4">Work Experience</h2>
+        <h2 class="section-title">Work Experience</h2>
 
         <div class="space-y-6">
 
-            <div class="border-l-4 border-blue-500 pl-4">
-                <h3 class="text-xl font-semibold">Game Development Intern</h3>
-                <p class="text-gray-600">Red Panda Games Studio | Nov 2024 - June 2025</p>
-                <ul class="list-disc list-inside mt-2 text-gray-700 space-y-1">
-                    <li>Worked with shader graphics and particle effects to enhance visual elements in the project</li>
+            <div class="timeline-border">
+                <h3 class="job-title">Game Development Intern</h3>
+                <p class="job-duration">Red Panda Games Studio • Nov 2024 – June 2025</p>
+                <ul class="job-list">
+                    <li>Manipulated shader graphs and particle effects to enhance visual elements</li>
                     <li>Refined the game’s UI to ensure a clean, intuitive, and user-friendly interface layout</li>
-                    <li>Spearheaded case studies and documented key design elements and mechanics that could be implemented</li>
-                    <li>QA tested games and conducted regression testing to report bugs and improve user experience</li>
-                    <li>Fine-Tuned troop and building interactions to ensure balanced gameplay</li>
-                    <li>Contributed to game dialogues and storyline development, enhancing the narrative experience</li>
-
+                    <li>Led GDD-based case studies to extract and document adaptable game mechanics</li>
+                    <li>QA and Regression testing to report bugs and enhance user experience</li>
+                    <li>Balanced troop and building interactions by tuning HP, counters, and damage values</li>
                 </ul>
             </div>
 
-            <div class="border-l-4 border-gray-300 pl-4">
-                <h3 class="text-xl font-semibold">AR Research Intern</h3>
-                <p class="text-gray-600">Stipe Solutions Pvt. Ltd. | April 2025 - June 2025</p>
-                <ul class="list-disc list-inside mt-2 text-gray-700 space-y-1">
-                    <li>Researched AR using Meta Quest and Unity.</li>
-                    <li>Integrated phone and hand gesture inputs using Microsoft ClipChamp</li>
+            <div class="timeline-border">
+                <h3 class="job-title">AR Research Intern</h3>
+                <p class="job-duration">Stipe Solutions Pvt. Ltd. • April 2025 – June 2025</p>
+                <ul class="job-list">
+                    <li>Researched AR integration for a real-time video-based web system.</li>
+                    <li>Integrated photos, videos, and AR overlays with captions using Microsoft Clipchamp.</li>
                 </ul>
             </div>
 
-            <div class="border-l-4 border-gray-300 pl-4">
-                <h3 class="text-xl font-semibold">Software Engineer Intern</h3>
-                <p class="text-gray-600">Hitachi India Pvt. Ltd. | April 2024 - June 2024</p>
-                <ul class="list-disc list-inside mt-2 text-gray-700 space-y-1">
-                    <li>Implemented stack & queue visually in Unity.</li>
-                    <li>Live weather project in Unity3D using API.</li>
-                    <li>Model integration and testing with Blender & Unity.</li>
+            <div class="timeline-border">
+                <h3 class="job-title">Software Engineer Intern</h3>
+                <p class="job-duration">Hitachi India Pvt. Ltd. • April 2024 – June 2024</p>
+                <ul class="job-list">
+                    <li>Visual stack & queue data structure implementation in Unity</li>
+                    <li>Visual Weather App using Api in Unity </li>
+                    <li>Integrated and tested Blender models</li>
                 </ul>
             </div>
 
@@ -205,55 +211,30 @@
     </section>
 
 
-    <!-- Projects -->
+    <!-- PROJECT SHOWCASE -->
     <section class="mt-10">
-        <h2 class="text-2xl font-semibold mb-6">Project Showcase</h2>
+        <h2 class="section-title">Project Showcase</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-            <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
-                <img
-                        src="Bioshockimage.jpg"
-                        alt="Bioshock III Screenshot"
-                        class="w-full h-48 object-cover"
-                >
-
+            <div class="project-card">
+                <img src="Bioshockimage.jpg" class="project-img">
                 <div class="p-5">
-                    <h3 class="text-xl font-semibold mb-2">Bioshock III - Posture Monitoring</h3>
-                    <p class="text-gray-700 mb-4">
-                        Real-time posture monitoring using IMU with vibration + buzzer alerts
-                        and a live dashboard for tracking.
-                    </p>
-
-                    <a href="https://github.com/AryaKenway/Bioshock-III-Smart-Posture-Monitor" target="_blank"
-                       class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
-                        <i data-lucide="github" class="w-5 h-5 mr-2"></i>
-                        View on GitHub
+                    <h3 class="project-title">Bioshock III - Posture Monitoring</h3>
+                    <p class="project-desc">Real-time posture monitoring using IMU + live dashboard.</p>
+                    <a href="https://github.com/AryaKenway/Bioshock-III-Smart-Posture-Monitor" target="_blank" class="project-link">
+                        <i data-lucide="github" class="w-5 h-5 mr-2"></i>View on GitHub
                     </a>
                 </div>
             </div>
 
-            <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
-                <iframe
-                        src="https://www.youtube.com/embed/-iHyOAHc6VM"
-                        title="JoPolik - The Super Experience"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                        class="w-full h-48"
-                ></iframe>
-
+            <div class="project-card">
+                <iframe src="https://www.youtube.com/embed/-iHyOAHc6VM" class="project-video"></iframe>
                 <div class="p-5">
-                    <h3 class="text-xl font-semibold mb-2">JoPolik - The Super Experience</h3>
-                    <p class="text-gray-700 mb-4">
-                        Educational multiplayer game with 2D/3D exploration,
-                        Photon PUN integration, NPC interaction and procedural worlds.
-                    </p>
-
-                    <a href="https://github.com/AryaKenway/JoPolik-The-Super-Experience" target="_blank"
-                       class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
-                        <i data-lucide="github" class="w-5 h-5 mr-2"></i>
-                        View on GitHub
+                    <h3 class="project-title">JoPolik - The Super Experience</h3>
+                    <p class="project-desc">Educational multiplayer game with Photon PUN.</p>
+                    <a href="https://github.com/AryaKenway/JoPolik-The-Super-Experience" target="_blank" class="project-link">
+                        <i data-lucide="github" class="w-5 h-5 mr-2"></i>View on GitHub
                     </a>
                 </div>
             </div>
@@ -263,12 +244,26 @@
 
 </div>
 
-<footer class="text-center py-6">
-    <p class="text-gray-500 text-sm">&copy; 2025 Arya Acharya.</p>
+<footer class="text-center py-6 relative z-10">
+    <p class="text-gray-200 text-sm">&copy; 2025 Arya Acharya.</p>
 </footer>
 
 <script>
     lucide.createIcons();
+
+    /* Auto-pause videos when tab is inactive */
+    document.addEventListener("visibilitychange", () => {
+        const vids = [
+            document.getElementById("side-video-left"),
+            document.getElementById("side-video-right")
+        ];
+
+        if (document.hidden) {
+            vids.forEach(v => v.pause());
+        } else {
+            vids.forEach(v => v.play());
+        }
+    });
 </script>
 
 </body>

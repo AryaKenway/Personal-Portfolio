@@ -1,0 +1,282 @@
+/* LEFT + RIGHT SIDE VIDEOS */
+#side-video-left,
+#side-video-right {
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 250px;
+    object-fit: cover;
+    z-index: -2;
+    opacity: 1.0;
+    filter: blur(0.5px) brightness(1.15);
+}
+
+/* Left video */
+#side-video-left {
+    left: 0;
+}
+
+/* Right video */
+#side-video-right {
+    right: 0;
+}
+
+/* Push main content inward */
+body {
+    margin-left: 250px;
+    margin-right: 250px;
+    font-family: 'Inter', sans-serif;
+    color: #e5e7eb;
+}
+
+/* Hide videos on small screens */
+@media (max-width: 1200px) {
+    #side-video-left, #side-video-right {
+        display: none;
+    }
+    body {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+/* Dark overlay */
+
+
+/* Section titles */
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.section-subtitle {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.about-text {
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+/* Work Experience */
+.timeline-border {
+    border-left: 4px solid #9ca3af;
+    padding-left: 1rem;
+}
+
+.job-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.job-duration {
+    color: #2563eb;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.job-list li {
+    color: #4b5563;
+    margin-top: 4px;
+}
+
+/* Skills */
+.tag-game {
+    background: #dbeafe; color: #1e40af;
+    padding: 6px 16px; border-radius: 9999px;
+    font-size: 0.85rem;
+}
+
+.tag-software {
+    background: #ede9fe; color: #5b21b6;
+    padding: 6px 16px; border-radius: 9999px;
+}
+
+.tag-ai {
+    background: #f3e8ff; color: #7e22ce;
+    padding: 6px 16px; border-radius: 9999px;
+}
+
+.tag-ux {
+    background: #ffe4e6; color: #be123c;
+    padding: 6px 16px; border-radius: 9999px;
+}
+
+.tag-vfx {
+    background: #fef3c7; color: #b45309;
+    padding: 6px 16px; border-radius: 9999px;
+}
+
+.tag-core {
+    background: #e5e7eb; color: #374151;
+    padding: 6px 16px; border-radius: 9999px;
+}
+
+.tag-database {
+    background: #cffafe; color: #0e7490;
+    padding: 6px 16px; border-radius: 9999px;
+}
+
+.tag-testing {
+    background: #fee2e2; color: #b91c1c;
+    padding: 6px 16px; border-radius: 9999px;
+}
+
+.tag-design {
+    background: #dcfce7; color: #166534;
+    padding: 6px 16px; border-radius: 9999px;
+}
+
+.tag-unity {
+    background: #e0e7ff; color: #4338ca;
+    padding: 6px 16px; border-radius: 9999px;
+}
+
+.tag-backend {
+    background: #ddd6fe; color: #4c1d95;
+    padding: 6px 16px; border-radius: 9999px;
+}
+
+.tag-hardware {
+    background: #ffedd5; color: #c2410c;
+    padding: 6px 16px; border-radius: 9999px;
+}
+
+.tag-git {
+    background: #1f2937; color: white;
+    padding: 6px 16px; border-radius: 9999px;
+}
+
+.tag-devops {
+    background: #bfdbfe; color: #1d4ed8;
+    padding: 6px 16px; border-radius: 9999px;
+}
+
+.tag-web {
+    background: #dbeafe; color: #1e3a8a;
+    padding: 6px 16px; border-radius: 9999px;
+}
+
+.tag-soft {
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 6px 16px;
+    border-radius: 9999px;
+}
+
+/* Project cards */
+.project-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.project-img,
+.project-video {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.project-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #a78bfa;
+}
+
+.project-desc {
+    color: #4b5563;
+    margin-bottom: 1rem;
+}
+
+.project-link {
+    color: #2563eb;
+    display: inline-flex;
+    align-items: center;
+}
+/* Neon initial colors */
+.icon-mail       { color: #38bdf8; }  /* neon sky blue */
+.icon-github     { color: #cbd5e1; }  /* soft silver neon */
+.icon-linkedin   { color: #60a5fa; }  /* neon blue */
+.icon-leetcode   { color: #fbbf24; }  /* neon amber */
+.icon-resume     { color: #34d399; }  /* neon green */
+
+/* Hover glow */
+.icon-mail:hover {
+    color: #7dd3fc;
+    filter: drop-shadow(0 0 6px #38bdf8);
+}
+
+.icon-github:hover {
+    color: #ffffff;
+    filter: drop-shadow(0 0 6px #94a3b8);
+}
+
+.icon-linkedin:hover {
+    color: #93c5fd;
+    filter: drop-shadow(0 0 6px #60a5fa);
+}
+
+.icon-leetcode:hover {
+    color: #fcd34d;
+    filter: drop-shadow(0 0 6px #fbbf24);
+}
+
+.icon-resume:hover {
+    color: #6ee7b7;
+    filter: drop-shadow(0 0 6px #34d399);
+}
+
+.main-wrapper {
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    box-shadow:
+        inset 0 0 50px rgba(0, 0, 0, 0.35),
+        0 0 20px rgba(0, 0, 0, 0.25);
+}
+.glow-name {
+    color: #dbeafe; /* very light desaturated blue */
+    animation: glowShift 3s ease-in-out infinite alternate;
+    text-shadow:
+        0 0 12px rgba(59, 130, 246, 0.6),   /* blue glow */
+        0 0 24px rgba(79, 70, 229, 0.4);    /* deep indigo */
+}
+
+@keyframes glowShift {
+    0% {
+        color: #dbeafe; /* soft blue */
+        text-shadow:
+            0 0 12px rgba(59,130,246,0.7),   /* medium blue */
+            0 0 28px rgba(79,70,229,0.5);    /* indigo */
+    }
+    100% {
+        color: #e0cffc; /* muted purple */
+        text-shadow:
+            0 0 12px rgba(109,40,217,0.7),   /* strong purple */
+            0 0 28px rgba(76,29,149,0.5);    /* dark violet */
+    }
+}
+.main-wrapper {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+        0 0 40px rgba(0,0,0,0.8),
+        inset 0 0 60px rgba(255,255,255,0.03);
+}
+.section-title {
+    color: #f8fafc; /* almost white */
+}
+
+.section-subtitle {
+    color: #cbd5e1; /* gray-300 */
+}
+
+.about-text, .job-list li {
+    color: #d1d5db; /* gray-300 */
+}
