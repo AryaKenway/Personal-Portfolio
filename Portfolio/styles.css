@@ -1,4 +1,3 @@
-/* LEFT + RIGHT SIDE VIDEOS */
 #side-video-left,
 #side-video-right {
     position: fixed;
@@ -11,17 +10,14 @@
     filter: blur(0.5px) brightness(1.15);
 }
 
-/* Left video */
 #side-video-left {
     left: 0;
 }
 
-/* Right video */
 #side-video-right {
     right: 0;
 }
 
-/* Push main content inward */
 body {
     margin-left: 250px;
     margin-right: 250px;
@@ -40,10 +36,8 @@ body {
     }
 }
 
-/* Dark overlay */
 
 
-/* Section titles */
 .section-title {
     font-size: 1.8rem;
     font-weight: 600;
@@ -61,7 +55,6 @@ body {
     margin-bottom: 0.5rem;
 }
 
-/* Work Experience */
 .timeline-border {
     border-left: 4px solid #9ca3af;
     padding-left: 1rem;
@@ -167,7 +160,6 @@ body {
     border-radius: 9999px;
 }
 
-/* Project cards */
 .project-card {
     background: white;
     border: 1px solid #e5e7eb;
@@ -200,14 +192,12 @@ body {
     display: inline-flex;
     align-items: center;
 }
-/* Neon initial colors */
-.icon-mail       { color: #38bdf8; }  /* neon sky blue */
-.icon-github     { color: #cbd5e1; }  /* soft silver neon */
-.icon-linkedin   { color: #60a5fa; }  /* neon blue */
-.icon-leetcode   { color: #fbbf24; }  /* neon amber */
-.icon-resume     { color: #34d399; }  /* neon green */
+.icon-mail       { color: #38bdf8; }
+.icon-github     { color: #cbd5e1; }
+.icon-linkedin   { color: #60a5fa; }
+.icon-leetcode   { color: #fbbf24; }
+.icon-resume     { color: #34d399; }
 
-/* Hover glow */
 .icon-mail:hover {
     color: #7dd3fc;
     filter: drop-shadow(0 0 6px #38bdf8);
@@ -240,25 +230,25 @@ body {
         0 0 20px rgba(0, 0, 0, 0.25);
 }
 .glow-name {
-    color: #dbeafe; /* very light desaturated blue */
+    color: #dbeafe;
     animation: glowShift 3s ease-in-out infinite alternate;
     text-shadow:
-        0 0 12px rgba(59, 130, 246, 0.6),   /* blue glow */
-        0 0 24px rgba(79, 70, 229, 0.4);    /* deep indigo */
+        0 0 12px rgba(59, 130, 246, 0.6),
+        0 0 24px rgba(79, 70, 229, 0.4);
 }
 
 @keyframes glowShift {
     0% {
-        color: #dbeafe; /* soft blue */
+        color: #dbeafe;
         text-shadow:
-            0 0 12px rgba(59,130,246,0.7),   /* medium blue */
-            0 0 28px rgba(79,70,229,0.5);    /* indigo */
+            0 0 12px rgba(59,130,246,0.7),
+            0 0 28px rgba(79,70,229,0.5);
     }
     100% {
-        color: #e0cffc; /* muted purple */
+        color: #e0cffc;
         text-shadow:
-            0 0 12px rgba(109,40,217,0.7),   /* strong purple */
-            0 0 28px rgba(76,29,149,0.5);    /* dark violet */
+            0 0 12px rgba(109,40,217,0.7),
+            0 0 28px rgba(76,29,149,0.5);
     }
 }
 .main-wrapper {
@@ -270,13 +260,71 @@ body {
         inset 0 0 60px rgba(255,255,255,0.03);
 }
 .section-title {
-    color: #f8fafc; /* almost white */
+    color: #f8fafc;
 }
 
 .section-subtitle {
-    color: #cbd5e1; /* gray-300 */
+    color: #cbd5e1;
 }
 
 .about-text, .job-list li {
-    color: #d1d5db; /* gray-300 */
+    color: #d1d5db;
+}
+.skill-tag {
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+    display: inline-block;
+    font-size: 0.9rem;
+    line-height: 1.3;
+}
+
+.skill-tag:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.45);
+    filter: brightness(1.3);
+}
+
+.skill-tag::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 150%;
+    height: 100%;
+    background: linear-gradient(
+        115deg,
+        rgba(0,255,255,0.0) 0%,
+        rgba(135, 0, 210, 0.8),
+        rgba(0,255,255,0.0) 100%
+    );
+    transform: skewX(-25deg);
+    transition: left 0.45s ease-out;
+}
+
+.skill-tag:hover::after {
+    left: 150%;
+}
+.greet-neon {
+    font-weight: 600;
+    color: #7dd3fc;
+    text-shadow: 0 0 8px #38bdf8, 0 0 12px #38bdf8;
+    white-space: nowrap;
+}
+
+#typed-greeting::after {
+    content: "|";
+    margin-left: 4px;
+    animation: blink 0.7s infinite;
+    color: #7dd3fc;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    50.1%, 100% { opacity: 0; }
+}
+.about-text {
+    text-align: justify;
+    text-justify: inter-word;
 }

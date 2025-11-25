@@ -11,21 +11,17 @@
 
 <body class="bg-black text-gray-200">
 
-<!-- LEFT SIDE VIDEO -->
 <video autoplay muted loop preload="none" id="side-video-left">
     <source src="sidevideo.mp4" type="video/mp4">
 </video>
 
-<!-- RIGHT SIDE VIDEO -->
 <video autoplay muted loop preload="none" id="side-video-right">
     <source src="sidevideo.mp4" type="video/mp4">
 </video>
 
-<!-- DARK OVERLAY BEHIND MAIN CONTENT -->
 
 <div class="main-wrapper max-w-4xl mx-auto p-6 md:p-10 bg-black bg-opacity-70 backdrop-blur-xl shadow-2xl rounded-2xl my-10 relative z-10">
 
-    <!-- Header -->
     <header class="flex flex-col md:flex-row items-start md:items-center justify-between border-b border-gray-300 pb-6">
 
         <div>
@@ -35,28 +31,24 @@
 
             <div class="flex items-center mt-3">
                 <img src="christ-logo.png" alt="Christ University Logo" class="h-10 w-10 mr-3 object-contain">
-                <p class="text-lg text-gray-700">Christ University, Bangalore</p>
+                <p class="text-[#a78bfa]">Christ University, Bangalore</p>
             </div>
         </div>
 
         <div class="flex items-center space-x-4 mt-6 md:mt-0">
 
-            <!-- Mail -->
             <a href="mailto:aryaacharya2500@gmail.com" class="icon-mail">
                 <i data-lucide="mail" class="w-6 h-6"></i>
             </a>
 
-            <!-- GitHub -->
             <a href="https://github.com/AryaKenway" target="_blank" class="icon-github">
                 <i data-lucide="github" class="w-6 h-6"></i>
             </a>
 
-            <!-- LinkedIn -->
             <a href="https://www.linkedin.com/in/arya-acharya" target="_blank" class="icon-linkedin">
                 <i data-lucide="linkedin" class="w-6 h-6"></i>
             </a>
 
-            <!-- LeetCode -->
             <a href="https://leetcode.com/u/bxH9OUO7qp" target="_blank" class="icon-leetcode">
                 <svg xmlns="http://www.w3.org/2000/svg"
                      class="w-6 h-6" viewBox="0 0 24 24" fill="none"
@@ -68,8 +60,6 @@
                 </svg>
             </a>
 
-            <!-- Resume Button Stays Same -->
-            <!-- Resume -->
             <a href="Arya_Acharya.pdf" target="_blank" class="icon-resume">
                 <i data-lucide="file-text" class="w-6 h-6"></i>
             </a>
@@ -80,97 +70,98 @@
     </header>
 
 
-    <!-- ABOUT -->
     <section class="mt-8">
         <h2 class="section-title">About Me</h2>
-        <p class="about-text">I am a motivated student with a growing interest in interactive technologies and digital experience design.</p>
-        <p class="about-text">I enjoy building creative and functional projects that combine both technical and visual thinking.</p>
-        <p class="about-text">My work focuses on improving user experiences through practical implementation and experimentation.</p>
-        <p class="about-text">I’m constantly learning and upgrading my skills with hands-on project development.</p>
-        <p class="about-text">Open to opportunities that challenge me and help expand my technical depth.</p>
+        <p class="about-text">
+            <span id="typed-greeting" class="greet-neon"></span>
+            My name is Arya Acharya. I am based in Bangalore, India.
+        </p>
+
+        <p class="about-text">I am a final-year Computer Science student at Christ University with a strong interest in emerging technologies.</p>
+        <p class="about-text">I am genuinely passionate about video games especially their history, design and development.</p>
+        <p class="about-text">I am also comfortable working across different software development areas and always ready to learn and improve.</p>
+
     </section>
 
 
-    <!-- SKILLS -->
     <section class="mt-10 space-y-8">
 
-        <!-- Proficiencies -->
         <div>
             <h3 class="section-subtitle">Proficiencies</h3>
-            <div class="flex flex-wrap gap-2">
-                <span class="tag-game">Game Development</span>
-                <span class="tag-game">Game Design</span>
-                <span class="tag-software">Software Design Patterns</span>
-                <span class="tag-database">Database Management</span>
-                <span class="tag-hardware">Microcontroller Programming</span>
-                <span class="tag-ai">Generative AI</span>
-                <span class="tag-ai">Agentic AI</span>
-                <span class="tag-ai">AI Task Automation</span>
-                <span class="tag-ux">UX Design</span>
-                <span class="tag-ux">Level Design</span>
-                <span class="tag-vfx">Particle Effects</span>
-                <span class="tag-vfx">Shader Graphs</span>
-                <span class="tag-core">Data Structures</span>
-                <span class="tag-database">SQL</span>
-                <span class="tag-testing">Software Testing</span>
+            <div class="flex flex-wrap gap-4">
+                <span class="tag-game skill-tag">Game Development</span>
+                <span class="tag-game skill-tag">Game Design</span>
+                <span class="tag-software skill-tag">Software Design Patterns</span>
+                <span class="tag-database skill-tag">Database Management</span>
+                <span class="tag-hardware skill-tag">Microcontroller Programming</span>
+                <span class="tag-ai skill-tag">Generative AI</span>
+                <span class="tag-ai skill-tag">Agentic AI</span>
+                <span class="tag-ai skill-tag">AI Task Automation</span>
+                <span class="tag-ux skill-tag">UX Design</span>
+                <span class="tag-ux skill-tag">Level Design</span>
+                <span class="tag-vfx skill-tag">Particle Effects</span>
+                <span class="tag-vfx skill-tag">Shader Graphs</span>
+                <span class="tag-core skill-tag">Data Structures</span>
+                <span class="tag-database skill-tag">SQL</span>
+                <span class="tag-testing skill-tag">Software Testing</span>
+
             </div>
         </div>
 
-        <!-- Tools -->
         <div>
             <h3 class="section-subtitle">Tools</h3>
-            <div class="flex flex-wrap gap-2">
-                <span class="tag-design">Figma</span>
-                <span class="tag-unity">Unity</span>
-                <span class="tag-unity">Blender</span>
-                <span class="tag-hardware">Arduino IDE</span>
-                <span class="tag-hardware">Autodesk Tinkercad</span>
-                <span class="tag-backend">.NET Framework</span>
-                <span class="tag-testing">Selenium</span>
-                <span class="tag-core">Git</span>
+            <div class="flex flex-wrap gap-4">
+                <span class="tag-design skill-tag">Figma</span>
+                <span class="tag-unity skill-tag">Unity</span>
+                <span class="tag-unity skill-tag">Blender</span>
+                <span class="tag-hardware skill-tag">Arduino IDE</span>
+                <span class="tag-hardware skill-tag">Autodesk Tinkercad</span>
+                <span class="tag-backend skill-tag">.NET Framework</span>
+                <span class="tag-testing skill-tag">Selenium</span>
+                <span class="tag-core skill-tag">Git</span>
+
             </div>
         </div>
 
-        <!-- Dev Platforms -->
         <div>
             <h3 class="section-subtitle">Developer Platforms</h3>
-            <div class="flex flex-wrap gap-2">
-                <span class="tag-git">GitHub</span>
-                <span class="tag-devops">Jenkins</span>
-                <span class="tag-devops">Docker</span>
-                <span class="tag-devops">CI/CD Pipelines</span>
-                <span class="tag-devops">DevOps Automation</span>
+            <div class="flex flex-wrap gap-4">
+                <span class="tag-git skill-tag">GitHub</span>
+                <span class="tag-devops skill-tag">Jenkins</span>
+                <span class="tag-devops skill-tag">Docker</span>
+                <span class="tag-devops skill-tag">CI/CD Pipelines</span>
+                <span class="tag-devops skill-tag">DevOps Automation</span>
+
             </div>
         </div>
 
-        <!-- Languages -->
         <div>
             <h3 class="section-subtitle">Programming Languages</h3>
-            <div class="flex flex-wrap gap-2">
-                <span class="tag-core">C#</span>
-                <span class="tag-core">Java</span>
-                <span class="tag-core">C</span>
-                <span class="tag-web">HTML5</span>
-                <span class="tag-web">CSS</span>
-                <span class="tag-database">SQL</span>
+            <div class="flex flex-wrap gap-4">
+                <span class="tag-core skill-tag">C#</span>
+                <span class="tag-core skill-tag">Java</span>
+                <span class="tag-core skill-tag">C</span>
+                <span class="tag-web skill-tag">HTML5</span>
+                <span class="tag-web skill-tag">CSS</span>
+                <span class="tag-database skill-tag">SQL</span>
+
             </div>
         </div>
 
-        <!-- Soft Skills -->
         <div>
             <h3 class="section-subtitle">Soft Skills</h3>
-            <div class="flex flex-wrap gap-2">
-                <span class="tag-soft">Problem Solving</span>
-                <span class="tag-soft">Documentation</span>
-                <span class="tag-soft">Collaboration</span>
-                <span class="tag-soft">Attention to Detail</span>
+            <div class="flex flex-wrap gap-4">
+                <span class="tag-soft skill-tag">Problem Solving</span>
+                <span class="tag-soft skill-tag">Documentation</span>
+                <span class="tag-soft skill-tag">Collaboration</span>
+                <span class="tag-soft skill-tag">Attention to Detail</span>
+
             </div>
         </div>
 
     </section>
 
 
-    <!-- WORK EXPERIENCE -->
     <section class="mt-10">
         <h2 class="section-title">Work Experience</h2>
 
@@ -211,7 +202,6 @@
     </section>
 
 
-    <!-- PROJECT SHOWCASE -->
     <section class="mt-10">
         <h2 class="section-title">Project Showcase</h2>
 
@@ -265,6 +255,42 @@
         }
     });
 </script>
+<script>
+    const words = [
+        "Hello",
+        "नमस्ते",
+        "こんにちは"
+    ];
+
+    let i = 0;
+    let j = 0;
+    let current = "";
+    let deleting = false;
+    const el = document.getElementById("typed-greeting");
+
+    function typeLoop() {
+        if (!deleting && j <= words[i].length) {
+            current = words[i].slice(0, j++);
+            el.textContent = current;
+        } else if (deleting && j >= 0) {
+            current = words[i].slice(0, j--);
+            el.textContent = current;
+        }
+
+        if (j === words[i].length + 1) {
+            setTimeout(() => deleting = true, 800);
+        } else if (deleting && j === -1) {
+            deleting = false;
+            i = (i + 1) % words.length;
+            j = 0;
+        }
+
+        setTimeout(typeLoop, deleting ? 60 : 100);
+    }
+
+    typeLoop();
+</script>
+
 
 </body>
 </html>
