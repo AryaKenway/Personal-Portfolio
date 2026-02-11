@@ -4,14 +4,12 @@
     box-sizing: border-box;
 }
 
-/* Force body to be transparent so video shows */
 body {
     background-color: transparent;
     font-family: 'Segoe UI', sans-serif;
     overflow-x: hidden;
 }
 
-/* The Fixed Background Layer */
 #bg-video {
     position: fixed;
     top: 50%;
@@ -20,10 +18,9 @@ body {
     min-height: 100%;
     width: auto;
     height: auto;
-    z-index: -100; /* Move it way back */
+    z-index: -100;
     transform: translateX(-50%) translateY(-50%);
     background-size: cover;
-    /* If video fails, this color shows */
     background: #050505;
 }
 
@@ -53,7 +50,6 @@ body {
     100% { transform: scale(1); }
 }
 
-/* THE PILLAR: Exactly like your red-marked drawing */
 .page-wrapper {
     width: 100%;
     min-height: 100vh;
@@ -64,25 +60,22 @@ body {
 .content-box {
     width: 60%;
     max-width: 800px;
-    min-height: 100vh; /* Stretches to bottom */
-    margin-top: 100px; /* Space from top */
+    min-height: 100vh;
+    margin-top: 100px;
     padding: 50px;
-    background: rgba(0, 0, 0, 0.85); /* Dark transparent */
+    background: rgba(0, 0, 0, 0.85);
 
-    /* Cyan Glow Borders */
     border-left: 2px solid #00f7ff;
     border-right: 2px solid #00f7ff;
     border-top: 2px solid #00f7ff;
     box-shadow: 0 -10px 30px rgba(0, 247, 255, 0.2);
 
-    /* Rounded top only */
     border-radius: 20px 20px 0 0;
 
     color: #00f7ff;
     text-align: center;
     z-index: 10;
 }
-/* Container alignment */
 .section-container {
     margin-top: 50px;
     padding: 20px 40px;
@@ -90,7 +83,6 @@ body {
     border-top: 1px solid rgba(0, 247, 255, 0.1);
 }
 
-/* Smaller, left-aligned title with normal casing */
 .section-title {
     font-size: 1.1rem;
     margin-bottom: 20px;
@@ -106,7 +98,6 @@ body {
     justify-content: flex-start;
 }
 
-/* The Glitch Button - No forced caps */
 .neon-button {
     --primary-glow: #00f7ff;
     --secondary-glow: #ff003c;
@@ -117,7 +108,7 @@ body {
     color: var(--primary-glow);
     text-decoration: none;
     font-weight: bold;
-    text-transform: none; /* Changed: This allows "Fortnite: A better experience" to stay as is */
+    text-transform: none;
     letter-spacing: 1px;
     border: 1px solid var(--primary-glow);
     position: relative;
@@ -127,7 +118,6 @@ body {
     z-index: 1;
 }
 
-/* The layers for the glitch effect */
 .neon-button::before,
 .neon-button::after {
     content: attr(data-text);
@@ -141,7 +131,7 @@ body {
     align-items: center;
     justify-content: center;
     opacity: 0;
-    pointer-events: none; /* Ensures you can still click the button */
+    pointer-events: none;
 }
 
 .neon-button:hover {
@@ -165,7 +155,6 @@ body {
     animation: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
 }
 
-/* CRITICAL: The animation logic must be in the file */
 @keyframes glitch {
     0% { transform: translate(0); }
     20% { transform: translate(-3px, 2px); }
@@ -174,7 +163,6 @@ body {
     80% { transform: translate(3px, -2px); }
     100% { transform: translate(0); }
 }
-/* Style for the Coming Soon placeholder */
 .status-wrapper {
     display: flex;
     justify-content: flex-start;
@@ -183,10 +171,9 @@ body {
 
 .coming-soon-text {
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.5); /* Muted white/grey */
+    color: rgba(255, 255, 255, 0.5);
     font-style: italic;
     letter-spacing: 1px;
-    /* Subtle pulse animation to keep the tech vibe */
     animation: pulse-opacity 2s infinite ease-in-out;
 }
 
@@ -194,11 +181,10 @@ body {
     0%, 100% { opacity: 0.4; }
     50% { opacity: 0.7; }
 }
-/* Navigation container to handle alignment */
 .nav-container {
     display: flex;
     justify-content: flex-start;
-    margin-bottom: -20px; /* Pulls the header back up slightly */
+    margin-bottom: -20px;
 }
 
 .back-link {
@@ -218,4 +204,36 @@ body {
     opacity: 1;
     text-shadow: 0 0 8px #00f7ff;
     border-bottom: 1px solid #00f7ff;
+}
+@media screen and (max-width: 768px) {
+    .content-box {
+        width: 95%;
+        padding: 30px 20px;
+        margin-top: 60px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+    .section-container {
+        padding: 20px 10px;
+        margin-top: 30px;
+    }
+
+    .neon-button {
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        width: 100%;
+        text-align: center;
+    }
+
+    .button-wrapper {
+        justify-content: center;
+    }
+
+    .take-that-text {
+        font-size: 50px;
+    }
 }

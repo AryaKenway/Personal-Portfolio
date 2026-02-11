@@ -48,15 +48,11 @@
     const audio = document.getElementById("intro-audio");
     const video = document.getElementById("bg-video");
 
-    // Approach: Force play on any user interaction to bypass browser blocks
     const startExperience = () => {
-        // Play Video
         video.play().catch(e => console.log("Video wait:", e));
 
-        // Play Audio
         audio.play().catch(e => console.log("Audio wait:", e));
 
-        // Run Animations
         setTimeout(() => {
             intro.style.opacity = "0";
             intro.style.pointerEvents = "none";
@@ -66,10 +62,8 @@
         }, 1800);
     };
 
-    // Listen for a click anywhere to ensure the browser allows media
     document.addEventListener("click", startExperience, { once: true });
 
-    // Also try on load in case the browser is feeling generous
     window.addEventListener("load", () => {
         video.play().catch(() => {
             console.log("Interaction required for video.");
