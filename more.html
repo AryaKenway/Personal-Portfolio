@@ -3,72 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#050505">
     <title>More - Arya Acharya</title>
-    <link rel="stylesheet" href="more.css">
 </head>
 <body>
-
-<video id="bg-video" loop muted playsinline>
-    <source src="nightcity.mp4" type="video/mp4">
-</video>
-
-<audio id="intro-audio" src="IntroMusic.mp3"></audio>
-
-<div id="intro-overlay">
-    <div class="take-that-text">TAKE THAT!</div>
-    <p style="color: white; margin-top: 20px; font-family: sans-serif; opacity: 0.6;">Click anywhere to start</p>
-</div>
-
-<div class="page-wrapper">
-    <div class="content-box"> <h1>DLC / Add-Ons</h1>
-
-        <div class="nav-container">
-            <a href="index.html" class="back-link">« Back</a>
-        </div>
-
-        <div class="section-container">
-            <h3 class="section-title">Game Design Documents</h3>
-            <div class="button-wrapper">
-                <a href="FortniteGDD.pdf" target="_blank" class="neon-button" data-text="Fortnite: A better experience">Fortnite: A better experience</a>
-            </div>
-        </div>
-
-        <div class="section-container">
-            <h3 class="section-title">Research Publications</h3>
-            <div class="status-wrapper">
-                <p class="coming-soon-text">Coming Soon</p>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<script>
-    const intro = document.getElementById("intro-overlay");
-    const audio = document.getElementById("intro-audio");
-    const video = document.getElementById("bg-video");
-
-    const startExperience = () => {
-        video.play().catch(e => console.log("Video wait:", e));
-
-        audio.play().catch(e => console.log("Audio wait:", e));
-
-        setTimeout(() => {
-            intro.style.opacity = "0";
-            intro.style.pointerEvents = "none";
-            setTimeout(() => {
-                intro.style.display = "none";
-            }, 1000);
-        }, 1800);
-    };
-
-    document.addEventListener("click", startExperience, { once: true });
-
-    window.addEventListener("load", () => {
-        video.play().catch(() => {
-            console.log("Interaction required for video.");
-        });
-    });
-</script>
+    <div id="root"></div>
+    <script type="module" src="/src/more.jsx"></script>
 </body>
 </html>

@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 * {
     margin: 0;
     padding: 0;
@@ -35,6 +37,18 @@ body {
     z-index: 1000;
     transition: opacity 1s ease;
     cursor: pointer;
+}
+
+#intro-overlay.is-fading {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.intro-instruction {
+    color: white;
+    margin-top: 20px;
+    font-family: sans-serif;
+    opacity: 0.6;
 }
 
 .take-that-text {
@@ -75,6 +89,11 @@ body {
     color: #00f7ff;
     text-align: center;
     z-index: 10;
+}
+
+.content-box h1 {
+    font-size: 2em;
+    font-weight: bold;
 }
 .section-container {
     margin-top: 50px;
@@ -212,7 +231,7 @@ body {
         margin-top: 60px;
     }
 
-    h1 {
+    .content-box h1 {
         font-size: 1.8rem;
         margin-bottom: 20px;
     }
