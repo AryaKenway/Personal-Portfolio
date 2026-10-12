@@ -51,7 +51,11 @@ export const experience = [
 
 export const projects = [
     { title: 'Bioshock III - Posture Monitoring', description: 'Real-time posture monitoring using IMU + live dashboard.', image: postureImage, href: 'https://github.com/AryaKenway/Bioshock-III-Smart-Posture-Monitor' },
-    { title: 'JoPolik - The Super Experience', description: 'Educational multiplayer game with Photon PUN.', video: 'https://www.youtube.com/embed/-iHyOAHc6VM', href: 'https://github.com/AryaKenway/JoPolik-The-Super-Experience' }
+    { title: 'JoPolik - The Super Experience', description: 'Educational multiplayer game with Photon PUN.', videoPlaceholder: true, href: 'https://github.com/AryaKenway/JoPolik-The-Super-Experience' },
+    { title: 'Project 03 - Title Placeholder', description: 'Project description placeholder.', videoPlaceholder: true },
+    { title: 'Project 04 - Title Placeholder', description: 'Project description placeholder.', videoPlaceholder: true },
+    { title: 'Project 05 - Title Placeholder', description: 'Project description placeholder.', videoPlaceholder: true },
+    { title: 'Project 06 - Title Placeholder', description: 'Project description placeholder.', videoPlaceholder: true }
 ];
 
 export const fortniteGddUrl = fortniteGdd;
