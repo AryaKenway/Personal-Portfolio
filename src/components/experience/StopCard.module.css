@@ -1,0 +1,399 @@
+/* ---- Panel: where the card sits on the stage ------------------------------ */
+
+/* Desktop / tablet: floats top-left over the sky. Phones: docked in the reserved bottom band. */
+.panel {
+    position: absolute;
+    z-index: 5;
+    top: 1rem;
+    left: 1rem;
+    width: min(25rem, 42%);
+}
+
+/* When the parked plane is on the left (e.g. the first stop), the card moves right. */
+.panelRight {
+    right: 1rem;
+    left: auto;
+}
+
+/*
+ * Phones and portrait tablets: docked in the bottom band the stage frame keeps free
+ * (--card-reserve). Two classes so it beats the floating widths in the media queries below.
+ */
+.panel.panelDocked {
+    top: auto;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    left: 0.6rem;
+    width: auto;
+    max-height: calc(var(--card-reserve, 42%) - 0.9rem);
+}
+
+.card {
+    padding: 1rem 1.15rem 1.05rem;
+    border: 1px solid rgb(60 40 20 / 12%);
+    border-radius: 1rem;
+    background: rgb(255 250 240 / 94%);
+    box-shadow: 0 0.8rem 2rem rgb(40 30 20 / 18%);
+    color: var(--ink);
+    backdrop-filter: blur(6px);
+}
+
+.organization {
+    margin: 0;
+    color: var(--accent);
+    font-size: 0.68rem;
+    font-weight: 750;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.role {
+    margin: 0.2rem 0 0;
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+}
+
+.meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.9rem;
+    margin: 0.45rem 0 0;
+    color: var(--ink-soft);
+    font-size: 0.74rem;
+}
+
+.meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.highlights {
+    display: grid;
+    gap: 0.35rem;
+    margin: 0.7rem 0 0;
+    padding-left: 1rem;
+    font-size: 0.8rem;
+    line-height: 1.45;
+}
+
+.highlights li::marker {
+    color: #e4572e;
+}
+
+/* ---- Passengers ------------------------------------------------------------ */
+
+.manifest {
+    margin-top: 0.75rem;
+    padding-top: 0.65rem;
+    border-top: 1px dashed rgb(60 40 20 / 16%);
+}
+
+.manifestLabel {
+    margin: 0 0 0.3rem;
+    color: var(--ink-soft);
+    font-size: 0.6rem;
+    font-weight: 750;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.passes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Boarding pass: a coloured ticket with half-circle notches cut into both ends. */
+.pass {
+    --pass-notch: 0.24rem;
+
+    display: inline-block;
+    flex: none;
+    padding: 0.24rem 0.7rem;
+    border-radius: 0.3rem;
+    background:
+        linear-gradient(rgb(255 255 255 / 16%), transparent 55%),
+        var(--pass-color, #c2410c);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    mask-composite: intersect;
+    mask-image:
+        radial-gradient(circle var(--pass-notch) at 0 50%, transparent 96%, #000),
+        radial-gradient(circle var(--pass-notch) at 100% 50%, transparent 96%, #000);
+}
+
+/* Already boarded at an earlier stop: a used, grey pass. */
+.passAboard {
+    --pass-color: #8b8478;
+}
+
+/* ---- Boarding passengers on the map (world px) ----------------------------- */
+
+.boarding {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+/* One passenger: its origin is the villager's feet (GSAP sets x/y). */
+.passenger {
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: transform, opacity;
+}
+
+/* The pass a passenger holds up (sits in the walker's sign slot). */
+.passOnMap {
+    --pass-notch: 3.5px;
+
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-family: var(--sans);
+    font-size: 11px;
+}
+
+/* ---- Finale ------------------------------------------------------------------ */
+
+.finaleCard .role {
+    font-size: 1.55rem;
+}
+
+.finaleText {
+    margin: 0.5rem 0 0;
+    color: var(--ink-soft);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.finaleLinks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.75rem 0 0;
+}
+
+.finaleLinks a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0 0.95rem;
+    border-radius: 999px;
+    background: var(--ink);
+    color: #fffaf0;
+    font-size: 0.8rem;
+    font-weight: 650;
+    text-decoration: none;
+}
+
+.finaleLinks a + a {
+    background: transparent;
+    box-shadow: inset 0 0 0 1.5px var(--ink);
+    color: var(--ink);
+}
+
+.finaleLinks a:hover {
+    opacity: 0.85;
+}
+
+/* A tap target centred on the finale point, at least 44px on screen at any map scale. */
+.finaleMarker {
+    position: absolute;
+    z-index: 1;
+    display: grid;
+    width: max(56px, calc(2.75rem / var(--world-scale, 1)));
+    height: max(56px, calc(2.75rem / var(--world-scale, 1)));
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    translate: -50% -50%;
+}
+
+.finaleMarker:focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 2px;
+}
+
+.finaleRing {
+    width: 46px;
+    height: 46px;
+    border: 4px dashed #e4572e;
+    border-radius: 50%;
+    background: rgb(255 250 240 / 55%);
+    animation: finale-spin 9s linear infinite;
+}
+
+.finaleMarkerArrived .finaleRing {
+    border-style: solid;
+    box-shadow: 0 0 0 10px rgb(228 87 46 / 18%);
+    animation: finale-glow 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes finale-spin {
+    to { rotate: 360deg; }
+}
+
+@keyframes finale-glow {
+    from { box-shadow: 0 0 0 6px rgb(228 87 46 / 22%); }
+    to { box-shadow: 0 0 0 16px rgb(228 87 46 / 8%); }
+}
+
+/* ---- Responsive ----------------------------------------------------------- */
+
+@media (max-width: 1023px) {
+    .panel {
+        width: min(23rem, 42%);
+    }
+
+    .role {
+        font-size: 1.22rem;
+    }
+}
+
+/* Phones: a compact docked card (its position comes from .panelDocked). */
+@media (max-width: 639px) {
+    .card {
+        padding: 0.8rem 0.9rem 0.85rem;
+        border-radius: 0.85rem;
+    }
+
+    .role {
+        font-size: 1.12rem;
+    }
+
+    .highlights {
+        gap: 0.25rem;
+        margin-top: 0.5rem;
+        font-size: 0.74rem;
+        line-height: 1.4;
+    }
+
+    .highlights li {
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+
+    .highlights li:nth-child(n + 3) {
+        display: none;
+    }
+
+    .manifest {
+        margin-top: 0.55rem;
+        padding-top: 0.5rem;
+    }
+
+    /* One line on phones so the docked card has a predictable height; extra passes fade off. */
+    .passes {
+        flex-wrap: nowrap;
+        overflow: hidden;
+        mask-image: linear-gradient(to right, #000 80%, transparent);
+    }
+}
+
+/* Short phones (e.g. 320×568, 360×640): the docked band is small, so keep one highlight. */
+@media (max-width: 639px) and (max-height: 700px) {
+    .highlights li:nth-child(n + 2),
+    .finaleText {
+        display: none;
+    }
+
+    .role {
+        font-size: 1.02rem;
+    }
+
+    .finaleCard .role {
+        font-size: 1.2rem;
+    }
+
+    .finaleLinks {
+        margin-top: 0.5rem;
+    }
+}
+
+/* The narrowest phones (≤ 360px) wrap the meta line; win the height back from spacing. */
+@media (max-width: 360px) {
+    .card {
+        padding: 0.6rem 0.7rem 0.65rem;
+    }
+
+    .meta {
+        margin-top: 0.3rem;
+        font-size: 0.68rem;
+    }
+
+    .highlights {
+        margin-top: 0.35rem;
+    }
+
+    .manifest {
+        margin-top: 0.4rem;
+        padding-top: 0.4rem;
+    }
+}
+
+/* Overlay card on shorter laptops: fewer highlights so it stays clear of the route. */
+@media (min-width: 640px) and (max-height: 820px) {
+    .highlights li:nth-child(n + 3) {
+        display: none;
+    }
+}
+
+@media (min-width: 640px) and (max-height: 720px) {
+    .highlights li:nth-child(n + 2) {
+        display: none;
+    }
+}
+
+/* Short screens (e.g. phone landscape): keep the card to the essentials. */
+@media (max-height: 560px) {
+    .card {
+        padding: 0.65rem 0.8rem;
+    }
+
+    .role {
+        font-size: 1.05rem;
+    }
+
+    .highlights,
+    .finaleText {
+        display: none;
+    }
+
+    .manifest {
+        margin-top: 0.45rem;
+        padding-top: 0.4rem;
+    }
+
+    .passes {
+        flex-wrap: nowrap;
+        overflow: hidden;
+        mask-image: linear-gradient(to right, #000 80%, transparent);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .finaleRing,
+    .finaleMarkerArrived .finaleRing {
+        animation: none;
+    }
+}

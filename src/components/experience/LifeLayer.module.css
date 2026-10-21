@@ -1,0 +1,113 @@
+/* Life on the map: looping sprites and walking characters (world px, pixel-crisp). */
+
+.layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+/* Looping sheet: frames left to right, stepped. */
+.loop {
+    position: absolute;
+    width: var(--fw);
+    height: var(--fh);
+    background-image: var(--img);
+    background-repeat: no-repeat;
+    background-size: calc(var(--fw) * var(--frames)) var(--fh);
+    image-rendering: pixelated;
+    animation: loop-frames var(--dur) steps(var(--frames)) var(--delay, 0s) infinite;
+}
+
+@keyframes loop-frames {
+    from { background-position-x: 0; }
+    to { background-position-x: calc(var(--fw) * var(--frames) * -1); }
+}
+
+/* Smoke also drifts up and fades as it plays. */
+.smoke {
+    animation:
+        loop-frames var(--dur) steps(var(--frames)) var(--delay, 0s) infinite,
+        smoke-rise var(--dur) ease-out var(--delay, 0s) infinite;
+}
+
+@keyframes smoke-rise {
+    from { opacity: 0.9; translate: 0 0; }
+    to { opacity: 0; translate: 0 calc(var(--fh) * -0.45); }
+}
+
+/* Something that moves: its origin is the feet (GSAP sets x/y). */
+.mover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: transform;
+}
+
+/*
+ * Walker: anchored at the feet. Sheet: 3 frames across (step, stand, step), one row per
+ * facing. Standing shows the middle frame; walking cycles step, stand, step, stand.
+ */
+.walker {
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+
+.walkerSprite {
+    position: absolute;
+    left: calc(var(--fw) / -2);
+    top: calc(var(--fh) * -1);
+    width: var(--fw);
+    height: var(--fh);
+    background-image: var(--img);
+    background-repeat: no-repeat;
+    background-size: calc(var(--fw) * 3) calc(var(--fh) * 4);
+    background-position: calc(var(--fw) * var(--stand) * -1) calc(var(--fh) * var(--dir) * -1);
+    image-rendering: pixelated;
+}
+
+.walker[data-walking="true"] .walkerSprite {
+    animation: walk-frames var(--dur) step-end infinite;
+}
+
+/* Standing still: a gentle breathing bob, out of step from person to person. */
+.walker[data-walking="false"] .walkerSprite {
+    transform-origin: 50% 100%;
+    animation: idle-breathe 2.4s ease-in-out var(--idle-delay, 0s) infinite;
+}
+
+@keyframes idle-breathe {
+    0%, 100% { scale: 1 1; }
+    50% { scale: 1.03 0.96; }
+}
+
+@keyframes walk-frames {
+    0% { background-position-x: 0; }
+    25% { background-position-x: calc(var(--fw) * -1); }
+    50% { background-position-x: calc(var(--fw) * -2); }
+    75% { background-position-x: calc(var(--fw) * -1); }
+    100% { background-position-x: 0; }
+}
+
+/* Whatever the walker carries (a skill sign), centred just above the head (the frame has
+   a little empty space over it). */
+.walkerSign {
+    position: absolute;
+    bottom: calc(var(--fh) * 0.9 + 2px);
+    left: 0;
+    translate: -50% 0;
+}
+
+.layer[data-paused] .loop,
+.layer[data-paused] .walkerSprite {
+    animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .loop,
+    .smoke,
+    .walker[data-walking="true"] .walkerSprite,
+    .walker[data-walking="false"] .walkerSprite {
+        animation: none;
+    }
+}

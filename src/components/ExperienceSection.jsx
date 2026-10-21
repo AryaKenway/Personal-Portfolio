@@ -1,14 +1,40 @@
-import { experience } from '../data/portfolio.js';
+/**
+ * @file ExperienceSection.jsx
+ * @description Experience section shell: heading plus the lazily loaded
+ * Mini Metro flight journey.
+ */
+
+import { lazy, Suspense } from 'react';
+import { getAllMilestones } from '../data/careerRepository.js';
+import styles from './ExperienceSection.module.css';
+
+const FlightJourney = lazy(() =>
+    import('./experience/FlightJourney.jsx').then((m) => ({ default: m.FlightJourney }))
+);
+
+function JourneyLoading() {
+    return (
+        <div className={styles.mapLoading} aria-hidden="true">Preparing for takeoff…</div>
+    );
+}
 
 export default function ExperienceSection() {
-    return <section className="mt-10">
-        <h2 className="section-title">Work Experience</h2>
-        <div className="space-y-6">
-            {experience.map(({ title, duration, highlights }) => <article key={title} className="timeline-border">
-                <h3 className="job-title">{title}</h3>
-                <p className="job-duration">{duration}</p>
-                <ul className="job-list">{highlights.map((item) => <li key={item}>{item}</li>)}</ul>
-            </article>)}
-        </div>
-    </section>;
+    const milestones = getAllMilestones();
+
+    return (
+        <section className={styles.experienceSection} id="experience">
+            <div className={styles.sectionHeading}>
+                <div>
+                    <p className={styles.eyebrow}>The route so far</p>
+                    <h2>Experience, mapped.</h2>
+                </div>
+                <p className={styles.sectionNote}>
+                    Scroll to fly through the journey, one stop at a time.
+                </p>
+            </div>
+            <Suspense fallback={<JourneyLoading />}>
+                <FlightJourney milestones={milestones} />
+            </Suspense>
+        </section>
+    );
 }

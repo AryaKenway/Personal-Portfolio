@@ -13,49 +13,130 @@ export const profile = {
 };
 
 export const skillGroups = [
-    { title: 'Proficiencies', skills: [
-        ['Game Development', 'tag-game'], ['Game Design', 'tag-game'], ['Software Design Patterns', 'tag-software'], ['Product Design', 'tag-software'], ['Database Management', 'tag-database'], ['Microcontroller Programming', 'tag-hardware'], ['Generative AI', 'tag-ai'], ['Agentic AI', 'tag-ai'], ['AI Task Automation', 'tag-ai'], ['AI-Based Workflow', 'tag-ai'], ['UX Design', 'tag-ux'], ['UX Research', 'tag-ux'], ['Interaction Design', 'tag-ux'], ['Wireframing', 'tag-ux'], ['Level Design', 'tag-ux'], ['Particle Effects', 'tag-vfx'], ['Shader Graphs', 'tag-vfx'], ['Data Structures', 'tag-core'], ['SQL', 'tag-database'], ['Software Testing', 'tag-testing']
-    ] },
-    { title: 'Tools', skills: [
-        ['Figma', 'tag-design'], ['Unity', 'tag-unity'], ['Blender', 'tag-unity'], ['Arduino IDE', 'tag-hardware'], ['Autodesk Tinkercad', 'tag-hardware'], ['.NET Framework', 'tag-backend'], ['Selenium', 'tag-testing'], ['Git', 'tag-core']
-    ] },
-    { title: 'Developer Platforms', skills: [
-        ['GitHub', 'tag-git'], ['Jenkins', 'tag-devops'], ['Docker', 'tag-devops'], ['CI/CD Pipelines', 'tag-devops'], ['DevOps Automation', 'tag-devops']
-    ] },
-    { title: 'Programming Languages', skills: [
-        ['C#', 'tag-core'], ['Java', 'tag-core'], ['JavaScript', 'tag-core'], ['C', 'tag-core'], ['React', 'tag-web'], ['HTML5', 'tag-web'], ['CSS', 'tag-web'], ['SQL', 'tag-database']
-    ] },
-    { title: 'Soft Skills', skills: [
-        ['Problem Solving', 'tag-soft'], ['Documentation', 'tag-soft'], ['Collaboration', 'tag-soft'], ['Attention to Detail', 'tag-soft']
-    ] }
+    {
+        title: 'Proficiencies',
+        skills: [
+            'Game Development', 'Game Design', 'Software Design Patterns', 'Product Design',
+            'Database Management', 'Microcontroller Programming', 'Generative AI', 'Agentic AI',
+            'AI Task Automation', 'AI-Based Workflow', 'UX Design', 'UX Research',
+            'Interaction Design', 'Wireframing', 'Level Design', 'Particle Effects',
+            'Shader Graphs', 'Data Structures', 'SQL', 'Software Testing'
+        ]
+    },
+    {
+        title: 'Tools',
+        skills: ['Figma', 'Unity', 'Blender', 'Arduino IDE', 'Autodesk Tinkercad', '.NET Framework', 'Selenium', 'Git']
+    },
+    {
+        title: 'Developer Platforms',
+        skills: ['GitHub', 'Jenkins', 'Docker', 'CI/CD Pipelines', 'DevOps Automation']
+    },
+    {
+        title: 'Programming Languages',
+        skills: ['C#', 'Java', 'JavaScript', 'C', 'React', 'HTML5', 'CSS', 'SQL']
+    },
+    {
+        title: 'Soft Skills',
+        skills: ['Problem Solving', 'Documentation', 'Collaboration', 'Attention to Detail']
+    }
 ];
 
 export const experience = [
-    { title: 'UX Designer Intern', duration: 'Walmart Global Tech India • March 2026 – Present', highlights: [
-        'Designed interactive prototypes for an analytics dashboard for site merchants, enabling data driven decisions to improve sales, customer experience, and product visibility, extensively leveraging LLMs',
-        'Designed an AI powered Item Intelligence dashboard, providing merchants with a comprehensive 360-degree view of every product across the catalog',
-        'Interpreted Figma designs to responsive web pages using React, Tailwind CSS, and AI-assisted Figma-to-code MCP workflows',
-        'Conducted heuristic evaluations and UX research to identify usability issues and recommend design improvements that enhanced the overall user experience',
-        'Led the planning and execution of neurodiversity and accessibility awareness events for Walmart'
-    ] },
-    { title: 'Game Development Intern', duration: 'Red Panda Games Studio • Nov 2024 – June 2025', highlights: [
-        'Manipulated shader graphs and particle effects to enhance visual elements', 'Refined the game’s UI to ensure a clean, intuitive, and user-friendly interface layout', 'Led GDD-based case studies to extract and document adaptable game mechanics', 'QA and Regression testing to report bugs and enhance user experience', 'Balanced troop and building interactions by tuning HP, counters, and damage values'
-    ] },
-    { title: 'AR Research Intern', duration: 'Stipe Solutions Pvt. Ltd. • April 2025 – June 2025', highlights: [
-        'Researched AR integration for a real-time video-based web system.', 'Integrated photos, videos, and AR overlays with captions using Microsoft Clipchamp.'
-    ] },
-    { title: 'Software Engineer Intern', duration: 'Hitachi India Pvt. Ltd. • April 2024 – June 2024', highlights: [
-        'Visual stack & queue data structure implementation in Unity', 'Visual Weather App using Api in Unity', 'Integrated and tested Blender models'
-    ] }
+    {
+        id: 'walmart',
+        title: 'UX Designer Intern',
+        organization: 'Walmart Global Tech India',
+        period: 'March 2026 – Present',
+        startDate: '2026-03',
+        endDate: null,
+        highlights: [
+            'Designed interactive prototypes for an analytics dashboard for site merchants, enabling data driven decisions to improve sales, customer experience, and product visibility, extensively leveraging LLMs',
+            'Designed an AI powered Item Intelligence dashboard, providing merchants with a comprehensive 360-degree view of every product across the catalog',
+            'Interpreted Figma designs to responsive web pages using React, Tailwind CSS, and AI-assisted Figma-to-code MCP workflows',
+            'Conducted heuristic evaluations and UX research to identify usability issues and recommend design improvements that enhanced the overall user experience',
+            'Led the planning and execution of neurodiversity and accessibility awareness events for Walmart'
+        ]
+    },
+    {
+        id: 'stipe',
+        title: 'AR Research Intern',
+        organization: 'Stipe Solutions Pvt. Ltd.',
+        period: 'April 2025 – June 2025',
+        startDate: '2025-04',
+        endDate: '2025-06',
+        highlights: [
+            'Researched AR integration for a real-time video-based web system.',
+            'Integrated photos, videos, and AR overlays with captions using Microsoft Clipchamp.'
+        ]
+    },
+    {
+        id: 'red-panda',
+        title: 'Game Development Intern',
+        organization: 'Red Panda Games Studio',
+        period: 'Nov 2024 – June 2025',
+        startDate: '2024-11',
+        endDate: '2025-06',
+        highlights: [
+            'Manipulated shader graphs and particle effects to enhance visual elements',
+            'Refined the game’s UI to ensure a clean, intuitive, and user-friendly interface layout',
+            'Led GDD-based case studies to extract and document adaptable game mechanics',
+            'QA and Regression testing to report bugs and enhance user experience',
+            'Balanced troop and building interactions by tuning HP, counters, and damage values'
+        ]
+    },
+    {
+        id: 'hitachi',
+        title: 'Software Engineer Intern',
+        organization: 'Hitachi India Pvt. Ltd.',
+        period: 'April 2024 – June 2024',
+        startDate: '2024-04',
+        endDate: '2024-06',
+        highlights: [
+            'Visual stack & queue data structure implementation in Unity',
+            'Visual Weather App using Api in Unity',
+            'Integrated and tested Blender models'
+        ]
+    }
 ];
 
+// `details` feeds the project popup; any field left out is simply not shown.
 export const projects = [
-    { title: 'Bioshock III - Posture Monitoring', description: 'Real-time posture monitoring using IMU + live dashboard.', image: postureImage, href: 'https://github.com/AryaKenway/Bioshock-III-Smart-Posture-Monitor' },
-    { title: 'JoPolik - The Super Experience', description: 'Educational multiplayer game with Photon PUN.', videoPlaceholder: true, href: 'https://github.com/AryaKenway/JoPolik-The-Super-Experience' },
+    {
+        title: 'Bioshock III - Posture Monitoring',
+        description: 'Real-time posture monitoring using IMU + live dashboard.',
+        image: postureImage,
+        href: 'https://github.com/AryaKenway/Bioshock-III-Smart-Posture-Monitor',
+        details: {
+            category: 'Wearable · Health tech',
+            role: 'Role placeholder',
+            timeline: 'Timeline placeholder',
+            overview: [
+                'A wearable that tracks posture in real time with an IMU sensor and streams the readings to a live dashboard.',
+                'Overview placeholder: the problem, your approach, and the outcome.'
+            ],
+            highlights: ['Real-time posture tracking from IMU readings', 'Live dashboard for monitoring posture', 'Highlight placeholder'],
+            tech: ['IMU sensor', 'Tech placeholder']
+        }
+    },
+    {
+        title: 'JoPolik - The Super Experience',
+        description: 'Educational multiplayer game with Photon PUN.',
+        videoPlaceholder: true,
+        href: 'https://github.com/AryaKenway/JoPolik-The-Super-Experience',
+        details: {
+            category: 'Multiplayer game · Education',
+            role: 'Role placeholder',
+            timeline: 'Timeline placeholder',
+            overview: [
+                'An educational multiplayer game built on Photon PUN.',
+                'Overview placeholder: the learning goal, the core loop, and how players interact.'
+            ],
+            highlights: ['Online multiplayer with Photon PUN', 'Highlight placeholder'],
+            tech: ['Unity', 'C#', 'Photon PUN']
+        }
+    },
     { title: 'Project 03 - Title Placeholder', description: 'Project description placeholder.', videoPlaceholder: true },
-    { title: 'Project 04 - Title Placeholder', description: 'Project description placeholder.', videoPlaceholder: true },
-    { title: 'Project 05 - Title Placeholder', description: 'Project description placeholder.', videoPlaceholder: true },
-    { title: 'Project 06 - Title Placeholder', description: 'Project description placeholder.', videoPlaceholder: true }
+    { title: 'Project 04 - Title Placeholder', description: 'Project description placeholder.', videoPlaceholder: true }
 ];
 
 export const fortniteGddUrl = fortniteGdd;

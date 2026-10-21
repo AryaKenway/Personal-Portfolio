@@ -1,0 +1,399 @@
+/* Pinned by ScrollTrigger; exactly one screen tall. */
+.pinFrame {
+    display: flex;
+    height: 100svh;
+    flex-direction: column;
+    padding-block: clamp(0.75rem, 2.5svh, 1.5rem);
+}
+
+.stage {
+    --route-color: #e4572e;
+    --route-casing: #fffaf0;
+    --stop-ink: #2b2620;
+    /* Ninja Adventure grass, shown for the instant before the map canvas draws. */
+    --map-ground: #a5c73f;
+
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    /* clip, not just hidden: focusing an off-camera stop must not scroll the stage. */
+    overflow: hidden;
+    overflow: clip;
+    border: 1px solid var(--line);
+    border-radius: 1.2rem;
+    background: var(--map-ground);
+}
+
+.scaler {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+}
+
+.camera {
+    will-change: transform;
+}
+
+/* Space finale layer (3D canvas): over the map, under the card. Faded in by the scroll engine. */
+.space {
+    position: absolute;
+    z-index: 4;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* The rocket (Lottie) over the 3D canvas; SpaceScene sizes and places it every frame. */
+.rocket {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 50% 62%;
+    visibility: hidden;
+    will-change: transform;
+}
+
+.world {
+    position: relative;
+}
+
+/* ---- Map ---------------------------------------------------------------- */
+
+.mapCanvas,
+.mapTint {
+    position: absolute;
+    left: 0;
+    pointer-events: none;
+}
+
+.mapCanvas {
+    display: block;
+    image-rendering: pixelated;
+}
+
+.skyLayer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.skyLayer {
+    will-change: transform;
+}
+
+.sceneryItem {
+    position: absolute;
+}
+
+.lottieFill {
+    width: 100%;
+    height: 100%;
+}
+
+.routeSvg {
+    position: absolute;
+    inset: 0;
+    display: block;
+    overflow: visible;
+}
+
+.routeCasing,
+.routePlanned,
+.routeLine,
+.finaleLine {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.routeCasing {
+    stroke: var(--route-casing);
+    stroke-width: 20;
+}
+
+.routePlanned {
+    stroke: var(--route-color);
+    stroke-width: 11;
+    opacity: 0.18;
+}
+
+/* Drawn in by the scroll engine; pathLength="1" makes the dash one full route. */
+.routeLine {
+    stroke: var(--route-color);
+    stroke-width: 11;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+}
+
+.finaleLine {
+    stroke: var(--route-color);
+    stroke-width: 5;
+    stroke-dasharray: 2 14;
+    opacity: 0.7;
+}
+
+/*
+ * Plane: the box is offset so its (50%, 80%) point sits on the element's origin.
+ * GSAP moves that origin along the route, so the plane rides just above the line
+ * and leaves the stop dot visible underneath. Keep in sync with transformOrigin
+ * in useJourneyScroll.js.
+ */
+.plane {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    width: var(--plane-size);
+    height: var(--plane-size);
+    margin-top: calc(var(--plane-size) * -0.8);
+    margin-left: calc(var(--plane-size) * -0.5);
+    pointer-events: none;
+    will-change: transform;
+}
+
+.planeLift,
+.planeFacing,
+.planeLottie {
+    width: 100%;
+    height: 100%;
+}
+
+.planeLift,
+.planeFacing {
+    transform-origin: 50% 80%;
+}
+
+/* Soft ground shadow under the wheels; the scroll engine shrinks and fades it with altitude. */
+.planeShadow {
+    position: absolute;
+    top: 76%;
+    left: 50%;
+    width: 42%;
+    height: 9%;
+    border-radius: 50%;
+    background: rgb(30 40 15 / 35%);
+    filter: blur(2px);
+    translate: -50% -50%;
+}
+
+/*
+ * Stop: a tap target centred on the stop point, at least 44px on screen however small the map
+ * is scaled. Drawn above boarding passengers, so one walking past never covers the sign (they
+ * pass behind it), and below the plane.
+ */
+.stop {
+    position: absolute;
+    z-index: 2;
+    display: grid;
+    width: calc(2.75rem / min(1, var(--world-scale, 1)));
+    height: calc(2.75rem / min(1, var(--world-scale, 1)));
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--stop-ink);
+    cursor: pointer;
+    translate: -50% -50%;
+}
+
+.stop:focus-visible {
+    outline: 3px solid var(--stop-ink);
+    outline-offset: 2px;
+}
+
+.stopDot {
+    position: relative;
+    width: 1.15rem;
+    height: 1.15rem;
+    border: 0.22rem solid var(--route-casing);
+    border-radius: 50%;
+    background: var(--route-color);
+    box-shadow: 0 0.2rem 0.5rem rgb(60 30 15 / 25%);
+    transition: transform 220ms ease;
+}
+
+/* Pulse rings live on the button so they always paint behind the dot. */
+.stop::before,
+.stop::after {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    width: 1.15rem;
+    height: 1.15rem;
+    margin: auto;
+    border-radius: 50%;
+    background: var(--route-color);
+    content: "";
+    opacity: 0;
+    animation: stop-pulse 2.6s ease-out infinite;
+    pointer-events: none;
+}
+
+.stop::after {
+    animation-delay: 1.3s;
+}
+
+/*
+ * Stop name: an airport wayfinding sign (yellow, black lettering) on a short post under
+ * the stop. The active stop's sign becomes a dark departure board with amber split-flap letters.
+ */
+.stopSign {
+    --sign-yellow: #ffcd29;
+    --sign-ink: #17181b;
+    --board: #1c1f26;
+    --board-amber: #ffc53d;
+
+    position: absolute;
+    top: calc(100% + 0.55rem);
+    left: 50%;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.26rem 0.55rem 0.26rem 0.42rem;
+    border: 2px solid var(--sign-ink);
+    border-radius: 0.3rem;
+    background: var(--sign-yellow);
+    box-shadow: 0 0.18rem 0 rgb(23 24 27 / 35%), 0 0.4rem 0.8rem rgb(40 25 10 / 22%);
+    color: var(--sign-ink);
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    translate: -50% 0;
+}
+
+/* The post, from the stop down to the sign. */
+.stopSign::before {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    width: 3px;
+    height: 0.55rem;
+    border-radius: 2px 2px 0 0;
+    background: var(--sign-ink);
+    content: "";
+    translate: -50% 0;
+}
+
+.stopSignIcon {
+    flex: none;
+}
+
+.stopSignActive {
+    padding-block: 0.2rem;
+    border-color: #0b0c0f;
+    background: var(--board);
+    color: var(--board-amber);
+}
+
+/* Split-flap letters: each on its own little tile with a hinge line through the middle. */
+.flaps {
+    display: inline-flex;
+    gap: 1px;
+    perspective: 200px;
+}
+
+.flap,
+.flapGap {
+    display: inline-block;
+    min-width: 0.62em;
+    text-align: center;
+}
+
+.flap {
+    padding: 0.05rem 0.05rem 0.02rem;
+    border-radius: 2px;
+    background: linear-gradient(#2b2f38 0 49%, #11131a 49% 51%, #23262e 51%);
+    font-variant-numeric: tabular-nums;
+    transform-origin: 50% 50%;
+}
+
+.flapGap {
+    min-width: 0.35em;
+}
+
+.stopActive .stopDot {
+    transform: scale(1.3);
+}
+
+.stopActive::before,
+.stopActive::after {
+    animation-duration: 1.8s;
+}
+
+/* One-off burst when the plane lands (mounted only while parked here). */
+.arrivalRipple {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    width: 1.15rem;
+    height: 1.15rem;
+    margin: auto;
+    border: 3px solid var(--route-color);
+    border-radius: 50%;
+    animation: stop-arrival 0.9s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes stop-arrival {
+    0% {
+        opacity: 0.9;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(4.5);
+    }
+}
+
+/* Visually hidden, still announced by screen readers. */
+.srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+@keyframes stop-pulse {
+    0% {
+        opacity: 0.45;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(2.8);
+    }
+}
+
+@media (max-width: 639px) {
+    .stage {
+        border-radius: 0.9rem;
+    }
+
+    .stopSign {
+        font-size: 0.66rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .stop::before,
+    .stop::after,
+    .arrivalRipple {
+        animation: none;
+    }
+
+    .arrivalRipple {
+        opacity: 0;
+    }
+
+    .stopDot {
+        transition: none;
+    }
+}

@@ -1,2 +1,4 @@
 node_modules/
 dist/
+# Downloaded asset packs (only the sprites the site uses are copied into src/assets).
+asset-inbox/
