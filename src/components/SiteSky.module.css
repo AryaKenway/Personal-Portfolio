@@ -1,0 +1,25 @@
+/* Behind everything on the page. The gradient is the sky until (or without) the 3D canvas. */
+.sky {
+    position: fixed;
+    z-index: -1;
+    inset: 0;
+    background:
+        radial-gradient(70% 55% at 78% 30%, rgb(164 67 50 / 0.28), transparent 70%),
+        radial-gradient(60% 50% at 20% 85%, rgb(52 55 110 / 0.26), transparent 70%),
+        #0e0d0f;
+    pointer-events: none;
+}
+
+.sky canvas {
+    position: absolute;
+    inset: 0;
+}
+
+/* Dims the sky evenly, a little more toward the centre column where the copy sits. */
+.scrim {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 60% 80% at 50% 50%, rgb(14 13 15 / 0.35), transparent 100%),
+        rgb(14 13 15 / 0.3);
+}

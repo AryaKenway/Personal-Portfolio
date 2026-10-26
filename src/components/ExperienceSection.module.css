@@ -11,7 +11,8 @@
     border: 1px solid var(--line);
     border-radius: 1.2rem;
     background: #f6efe0;
-    color: var(--ink-soft);
+    color: #57534c;
+    text-shadow: none;
     font-size: 0.78rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -25,30 +26,23 @@
     margin-bottom: 1.25rem;
 }
 
-.eyebrow {
-    margin: 0 0 0.55rem;
-    color: var(--accent);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-}
-
 .sectionHeading h2 {
     margin: 0;
     color: var(--ink);
-    font-family: var(--serif);
-    font-size: clamp(2.25rem, 5vw, 4rem);
+    font-family: var(--sans);
+    /* Same as every other section title (.section-title in styles.css). */
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
     font-weight: 500;
-    letter-spacing: -0.055em;
-    line-height: 1;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
 }
 
+/* One line wherever it fits; phones (below) let it wrap. */
 .sectionNote {
-    max-width: 22rem;
     margin: 0 0 0.2rem;
+    white-space: nowrap;
     color: var(--ink-soft);
-    font-family: var(--serif);
+    font-family: var(--sans);
     font-size: 1.08rem;
     line-height: 1.5;
 }
@@ -64,5 +58,6 @@
     .sectionNote {
         max-width: 25rem;
         font-size: 0.94rem;
+        white-space: normal;
     }
 }

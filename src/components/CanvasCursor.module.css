@@ -1,0 +1,147 @@
+.canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+}
+
+/* The pointer itself: a planet (the click point) with three moons on tilted
+   orbits, atom-style. The outer span only carries the position and the
+   perspective; the children do the motion, in one shared 3D space. */
+.pointer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+    perspective: 160px;
+    transition: opacity 150ms ease;
+    will-change: transform;
+}
+
+.pointer[data-visible="true"] {
+    opacity: 1;
+}
+
+/* Over Skills, Experience and Projects the system cursor is back instead. */
+.pointer[data-native="true"] {
+    opacity: 0;
+}
+
+/* Shared 3D space, so the moons really pass in front of and behind the planet. */
+.system {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-style: preserve-3d;
+}
+
+/* The thin dark edges keep the bodies readable on light surfaces too. */
+.planet {
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #f4f0e8;
+    box-shadow: 0 0 0 1px rgb(14 13 15 / 0.45);
+}
+
+/* --orbit-lean is how far each ring is tipped away from facing the screen. */
+.orbit {
+    --orbit-lean: 70deg;
+
+    position: absolute;
+    top: -13px;
+    left: -13px;
+    width: 26px;
+    height: 26px;
+    border: 1px solid rgb(236 230 218 / 0.28);
+    border-radius: 50%;
+    transform: rotateZ(var(--tilt)) rotateX(var(--orbit-lean));
+    transform-style: preserve-3d;
+    /* Springs back out past its size after a click. */
+    transition: scale 320ms cubic-bezier(0.34, 1.56, 0.64, 1), border-color 200ms ease;
+}
+
+/* Two nested spinners per ring: the outer one always turns; the inner one only
+   runs on hover, adding speed without the jump a changed duration would cause. */
+.spin,
+.boost {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    animation: orbit var(--period) linear var(--phase) infinite;
+}
+
+.boost {
+    animation-duration: calc(var(--period) / 2);
+    animation-delay: 0s;
+    animation-play-state: paused;
+}
+
+/* The moon undoes every rotation above it (both spins, the lean and the tilt),
+   so it stays a round dot facing the viewer wherever it is on its ring. */
+.moonBoost {
+    position: absolute;
+    top: -1.75px;
+    left: calc(50% - 1.75px);
+    width: 3.5px;
+    height: 3.5px;
+    transform-style: preserve-3d;
+    animation: orbit-undo calc(var(--period) / 2) linear infinite paused;
+}
+
+.moon {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--moon);
+    box-shadow: 0 0 0 1px rgb(14 13 15 / 0.4);
+    animation: moon-face var(--period) linear var(--phase) infinite;
+}
+
+/* Over something clickable the orbits widen and the moons speed up. */
+.pointer[data-hover="true"] .orbit {
+    border-color: rgb(236 230 218 / 0.5);
+    /* All three axes, or the tipped rings would flatten as they grow. */
+    scale: 1.45 1.45 1.45;
+}
+
+.pointer[data-hover="true"] .boost,
+.pointer[data-hover="true"] .moonBoost {
+    animation-play-state: running;
+}
+
+/* On press the moons snap in close; releasing swings them back out. */
+.pointer[data-pressed="true"] .orbit {
+    scale: 0.45 0.45 0.45;
+    transition-duration: 110ms;
+    transition-timing-function: ease-out;
+}
+
+@keyframes orbit {
+    to { transform: rotateZ(360deg); }
+}
+
+@keyframes orbit-undo {
+    to { transform: rotateZ(-360deg); }
+}
+
+@keyframes moon-face {
+    from { transform: rotateZ(0deg) rotateX(calc(-1 * var(--orbit-lean))) rotateZ(calc(-1 * var(--tilt))); }
+    to { transform: rotateZ(-360deg) rotateX(calc(-1 * var(--orbit-lean))) rotateZ(calc(-1 * var(--tilt))); }
+}
+
+/* While the trails are running they are the pointer, so hide the system one
+   everywhere — including the grab/pointer cursors set by individual sections. */
+:global(html[data-canvas-cursor="on"]),
+:global(html[data-canvas-cursor="on"] *) {
+    cursor: none !important;
+}

@@ -517,6 +517,12 @@ owner asks, with the same build + browser checks as before. Several phases are b
   dev only, not in the built site); fixed in Vite 8.3.5. Upgrade when convenient.
 - Known: three.js logs a "THREE.Clock deprecated" warning from React Three Fiber (harmless).
 
+### Later change: section order
+- Skills moved above Experience (page order: About → Skills → Experience → Selected work). The wheel
+  outside the pinned map now leaves downward to Selected work (`NEXT_SECTION_ID = 'work'` in
+  `FlightJourney.jsx`) instead of Skills. Upward is unchanged. Where this file says "down → Skills",
+  read "down → Selected work".
+
 ### Decisions (owner answers)
 - **D1 ✅ (scroll):** the wheel **over the map** moves the plane; the wheel **anywhere else** on the
   page skips past the journey on to Skills & tools. **No settling:** the plane stays exactly where

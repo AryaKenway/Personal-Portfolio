@@ -23,31 +23,31 @@ import { experience, profile } from './portfolio.js';
  * @property {string[]} highlights - Key accomplishments.
  */
 
-/** Per-milestone details that `portfolio.js` does not carry. */
+/**
+ * Per-milestone details that `portfolio.js` does not carry. `highlights` here
+ * replaces the entry's own; leave it out to show the `portfolio.js` wording.
+ */
 const MILESTONE_DETAILS = {
     education: {
         shortName: 'Christ University',
         location: 'Bangalore, India',
-        skills: ['Computer Science', 'Data Structures', 'C#', 'Java', 'Algorithms', 'Software Design Patterns'],
-        highlights: [
-            'Pursuing degree with rigorous focus on Software Engineering, Data Structures, and Applied Computer Science.',
-            'Built foundational expertise in Object-Oriented Programming, C#, Java, Database Management, and UI/UX fundamentals.'
+        skills: [
+            'Software Design Patterns', 'Java', 'SQL', 'Database Management', 'Gen AI', 'Selenium', 'Docker',
+            'Software Testing', 'Jenkins', 'C', 'Hardware Programming', 'Tinkercad', 'Algorithms'
         ]
     },
     hitachi: {
         shortName: 'Hitachi',
         location: 'Bangalore, India',
-        skills: ['Unity', 'C#', 'Visual Data Structures', 'Blender', 'REST APIs', 'Software Testing'],
-        highlights: [
-            'Engineered visual stack and queue data structure simulations in Unity for educational comprehension.',
-            'Built an interactive visual weather application integrating real-time third-party REST APIs.',
-            'Integrated and validated 3D Blender assets with automated asset testing pipelines.'
-        ]
+        skills: ['Unity Engine', 'C#', 'Blender', 'Data Structures', 'Version Control']
     },
     'red-panda': {
         shortName: 'Red Panda Games',
         location: 'Remote / Bangalore',
-        skills: ['Unity', 'Shader Graphs', 'Particle Systems', 'Game Design Docs', 'QA & Regression Testing', 'Game Balancing'],
+        skills: [
+            'Game Design', 'Unity Engine', 'C# Scripting', 'Level Design', 'Narrative Design', 'Shader Graphs',
+            'Regression Testing', 'Functional Testing'
+        ],
         highlights: [
             'Programmed custom shader graphs and dynamic particle systems to enhance real-time visual fidelity.',
             'Overhauled the game interface layout, engineering clean, intuitive, and high-performance UI components.',
@@ -58,46 +58,57 @@ const MILESTONE_DETAILS = {
     stipe: {
         shortName: 'Stipe Solutions',
         location: 'Bangalore, India',
-        skills: ['Augmented Reality', 'Video Systems', 'Spatial Overlays', 'Interaction Design', 'Research'],
-        highlights: [
-            'Conducted applied research on integrating real-time augmented reality into web-based video systems.',
-            'Implemented interactive multimedia pipelines combining videos, dynamic captions, and real-time AR overlays.'
-        ]
+        skills: ['AR Research', 'Prototyping', 'Video Editing', 'Spatial Overlays']
     },
     walmart: {
         shortName: 'Walmart',
         location: 'Walmart Global Tech, Bangalore',
-        skills: ['UX Design', 'Generative AI', 'React', 'Tailwind CSS', 'Figma-to-Code MCP', 'Heuristic Evaluation', 'Accessibility'],
-        highlights: [
-            'Designed high-fidelity interactive prototypes for site merchant analytics dashboards powered by LLMs.',
-            'Architected the AI-driven Item Intelligence dashboard delivering 360-degree catalog insights.',
-            'Transformed complex Figma designs into responsive production-grade web interfaces using React & Tailwind.',
-            'Conducted heuristic usability evaluations and user research sessions, significantly streamlining merchant workflows.',
-            'Championed accessibility and neurodiversity awareness initiatives across the global enterprise tech organization.'
+        skills: [
+            'UX Design', 'User Research', 'Figma', 'React', 'Tailwind', 'Gen AI Prototyping', 'Version Control',
+            'Accessibility Testing'
         ]
     }
 };
 
-/** @returns {Milestone[]} Chronological, education first. */
+/**
+ * The order the plane visits the stops. Not strictly by start date: Stipe comes before
+ * Red Panda on purpose. Any id missing here goes last, by start date.
+ */
+const STOP_ORDER = ['education', 'hitachi', 'stipe', 'red-panda', 'walmart'];
+
+function stopRank(entry) {
+    const rank = STOP_ORDER.indexOf(entry.id);
+    return rank === -1 ? STOP_ORDER.length : rank;
+}
+
+/** @returns {Milestone[]} In STOP_ORDER, education first. */
 function buildMilestones() {
     const education = {
         id: 'education',
         type: 'education',
-        title: 'BCA / Computer Science',
+        title: 'B.Tech. in Computer Science',
         organization: profile.university || 'Christ University, Bangalore',
-        period: '2023 – 2026',
-        startDate: '2023-06',
-        endDate: '2026-05'
+        period: '2022 – 2026',
+        startDate: '2022-06',
+        endDate: '2026-05',
+        highlights: [
+            'Graduated with a CGPA of 8.8, earning a merit scholarship in my third year',
+            'Presented VSS, a research paper on visualizing search and sort algorithms, at the FED Global Conference',
+            'Won first place at Battle of Brains, hosted by the Department of CSE',
+            'Finalist in Gen AI Hack Fest 2025 organized by CMR Institute of Technology',
+            'Led teams on two major projects built around SOLID design principles and DevOps practices'
+        ]
     };
 
-    const entries = [education, ...experience.slice().sort((a, b) => a.startDate.localeCompare(b.startDate))];
+    const entries = [education, ...experience].sort(
+        (a, b) => stopRank(a) - stopRank(b) || a.startDate.localeCompare(b.startDate)
+    );
 
     return entries.map((raw) => {
         const details = MILESTONE_DETAILS[raw.id] ?? {
             shortName: raw.organization,
             location: 'Bangalore, India',
-            skills: [],
-            highlights: []
+            skills: []
         };
 
         return Object.freeze({
@@ -111,7 +122,7 @@ function buildMilestones() {
             startDate: raw.startDate,
             endDate: raw.endDate || null,
             skills: details.skills,
-            highlights: details.highlights.length > 0 ? details.highlights : (raw.highlights || [])
+            highlights: details.highlights ?? raw.highlights ?? []
         });
     });
 }

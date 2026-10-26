@@ -25,7 +25,6 @@ export default function ExperienceSection() {
         <section className={styles.experienceSection} id="experience">
             <div className={styles.sectionHeading}>
                 <div>
-                    <p className={styles.eyebrow}>The route so far</p>
                     <h2>Experience, mapped.</h2>
                 </div>
                 <p className={styles.sectionNote}>

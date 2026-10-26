@@ -1,5 +1,6 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { FaFirefoxBrowser } from 'react-icons/fa';
 
 const ZOOM_TIME = 480;
 const CONTENT_FADE_TIME = 180;
@@ -31,8 +32,8 @@ export default function ProjectPopup({ project, number, sourceElement, onClosed 
     const isClosingRef = useRef(false);
     const [frame, setFrame] = useState(getPanelFrame);
     const zoomTime = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : ZOOM_TIME;
-    const { title, description, image, href, details = {} } = project;
-    const { category, role, timeline, overview = [], highlights = [], tech = [], demo } = details;
+    const { title, description, image, youtube, href, details = {} } = project;
+    const { category, role, timeline, overview = [], highlights = [], tech = [], demo, gallery, kicker = true, extraLinks = [] } = details;
 
     useLayoutEffect(() => {
         const startFrame = getPanelFrame();
@@ -89,16 +90,34 @@ export default function ProjectPopup({ project, number, sourceElement, onClosed 
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
                 </button>
                 <div className="project-detail-scroll">
-                    <div className="project-detail-media">
-                        {image
-                            ? <img src={image} alt={title} />
-                            : <div className="project-video-placeholder" role="img" aria-label={`${title} video placeholder`}><span>Video placeholder</span></div>}
-                    </div>
+                    {gallery
+                        // Each column's share of the width is its image's aspect ratio, so all show at the same height.
+                        ? <div
+                            className="project-detail-media project-detail-gallery"
+                            style={{ gridTemplateColumns: gallery.map((item) => `${(item.width / item.height).toFixed(3)}fr`).join(' ') }}
+                        >
+                            {gallery.map((item) => <img key={item.src} src={item.src} alt={item.alt} />)}
+                        </div>
+                        : youtube
+                        ? <div className="project-detail-media project-detail-video">
+                            <iframe
+                                src={`https://www.youtube-nocookie.com/embed/${youtube}?rel=0`}
+                                title={`${title} video`}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerPolicy="strict-origin-when-cross-origin"
+                                allowFullScreen
+                            />
+                        </div>
+                        : <div className="project-detail-media">
+                            {image
+                                ? <img src={image} alt={title} />
+                                : <div className="project-video-placeholder" role="img" aria-label={`${title} video placeholder`}><span>Video placeholder</span></div>}
+                        </div>}
                     <div className="project-detail-body">
                         <div className="project-detail-main">
-                            <span className="project-detail-kicker">
+                            {kicker && <span className="project-detail-kicker">
                                 Project {String(number).padStart(2, '0')}{category && ` · ${category}`}
-                            </span>
+                            </span>}
                             <h2 id={titleId} className="project-detail-title">{title}</h2>
                             <p className="project-detail-lede">{description}</p>
                             {overview.map((paragraph) => <p key={paragraph} className="project-detail-text">{paragraph}</p>)}
@@ -120,11 +139,15 @@ export default function ProjectPopup({ project, number, sourceElement, onClosed 
                                     {tech.map((item) => <li key={item}>{item}</li>)}
                                 </ul>
                             </div>}
-                            {(href || demo) && <div className="project-detail-links">
+                            {(href || demo || extraLinks.length > 0) && <div className="project-detail-links">
                                 {href && <a href={href} target="_blank" rel="noopener noreferrer" className="project-detail-link">
                                     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297a12 12 0 0 0-3.794 23.39c.6.111.82-.258.82-.577v-2.257c-3.338.725-4.043-1.416-4.043-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.082-.73.082-.73 1.205.084 1.839 1.236 1.839 1.236 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.605-2.665-.303-5.467-1.332-5.467-5.93 0-1.31.469-2.381 1.236-3.221-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.301 1.23a11.49 11.49 0 0 1 6.008 0c2.293-1.552 3.3-1.23 3.3-1.23.654 1.653.242 2.873.118 3.176.77.84 1.236 1.911 1.236 3.221 0 4.609-2.807 5.624-5.479 5.921.43.37.814 1.102.814 2.222v3.293c0 .322.218.694.825.576A12.002 12.002 0 0 0 12 .297" /></svg>
                                     View on GitHub
                                 </a>}
+                                {extraLinks.map((link) => <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className="project-detail-link project-detail-link--secondary">
+                                    {link.icon === 'firefox' && <FaFirefoxBrowser aria-hidden="true" focusable="false" />}
+                                    {link.label}
+                                </a>)}
                                 {demo && <a href={demo} target="_blank" rel="noopener noreferrer" className="project-detail-link project-detail-link--secondary">Live demo</a>}
                             </div>}
                         </aside>

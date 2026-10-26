@@ -16,7 +16,6 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 import { AnimatePresence, LazyMotion, MotionConfig, domAnimation } from 'motion/react';
 import { buildRoute, cameraXFor } from './routeGeometry.js';
 import { buildWorld } from './buildWorld.js';
-import { passengersAfter } from './passengers.js';
 import { useIsPortrait, useViewportProfile } from './useViewportProfile.js';
 import { useReducedMotion } from './useReducedMotion.js';
 import { useSmoothScroll } from './useSmoothScroll.js';
@@ -50,7 +49,7 @@ function supportsWebGL() {
 }
 
 /** Where the wheel outside the map leads while the journey is pinned. */
-const NEXT_SECTION_ID = 'skills';
+const NEXT_SECTION_ID = 'work';
 
 /** Share of the stage height kept for the docked stop card (phones, portrait tablets). */
 const DOCKED_CARD_RESERVE = 0.42;
@@ -140,10 +139,6 @@ export function FlightJourney({ milestones }) {
     });
 
     const landedStop = arrivedStep !== null && arrivedStep < finaleStep ? route.stops[arrivedStep] : null;
-    const passengers = useMemo(
-        () => passengersAfter(milestones, Math.min(arrivedStep ?? activeStep, finaleStep - 1)),
-        [milestones, arrivedStep, activeStep, finaleStep]
-    );
     const showCard = isOnScreen && arrivedStep !== null;
     // Who walks to the plane at this stop, and when each boards (shared with the card's passes).
     const boardingPlan = useMemo(
@@ -270,7 +265,6 @@ export function FlightJourney({ milestones }) {
                                     key={landedStop.milestone.id}
                                     milestone={landedStop.milestone}
                                     step={arrivedStep}
-                                    passengers={passengers}
                                     boardTimes={reducedMotion ? undefined : boardingPlan.map((walk) => walk.boardAt)}
                                 />
                             ) : (

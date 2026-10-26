@@ -5,8 +5,7 @@
  *   the district's houses as a villager holding its boarding pass and walks straight round
  *   to the plane, keeping clear of the stop's sign, then climbs aboard (see `planBoarding`).
  * - `PickedUpPasses` (in the stop card): this stop's skills as boarding passes, each
- *   stamped in the moment its villager boards. Skills already aboard from an earlier stop
- *   show as a grey pass.
+ *   stamped in the moment its villager boards, in the stop's colour.
  */
 
 import { useRef } from 'react';
@@ -75,10 +74,9 @@ export function BoardingWalkers({ plan, step, scale, tileSize }) {
  * @param {Object} props
  * @param {readonly string[]} props.skills - This stop's skills, in the stop's own order.
  * @param {number} props.step - This stop's index.
- * @param {ReadonlyMap<string, number>} props.boardedAt - Skill → step where it first boarded.
  * @param {readonly number[]} [props.boardTimes] - Seconds after landing when each skill boards.
  */
-export function PickedUpPasses({ skills, step, boardedAt, boardTimes = [] }) {
+export function PickedUpPasses({ skills, step, boardTimes = [] }) {
     const reducedMotion = useReducedMotion();
     if (skills.length === 0) return null;
 
@@ -86,24 +84,19 @@ export function PickedUpPasses({ skills, step, boardedAt, boardTimes = [] }) {
         <div className={styles.manifest}>
             <p className={styles.manifestLabel}>Picked up here</p>
             <ul className={styles.passes}>
-                {skills.map((skill, index) => {
-                    const aboard = boardedAt.get(skill) !== step;
-                    return (
-                        <m.li
-                            key={skill}
-                            className={`${styles.pass} ${aboard ? styles.passAboard : ''}`}
-                            // Used passes keep the grey from .passAboard (an inline colour would override it).
-                            style={aboard ? undefined : { '--pass-color': passColorFor(step) }}
-                            title={aboard ? 'Already on board' : undefined}
-                            // Stamped in as its villager on the map boards the plane.
-                            initial={reducedMotion ? false : { opacity: 0, scale: 1.3, rotate: -8 }}
-                            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                            transition={{ type: 'spring', stiffness: 420, damping: 18, delay: boardTimes[index] ?? 0 }}
-                        >
-                            {skill}
-                        </m.li>
-                    );
-                })}
+                {skills.map((skill, index) => (
+                    <m.li
+                        key={skill}
+                        className={styles.pass}
+                        style={{ '--pass-color': passColorFor(step) }}
+                        // Stamped in as its villager on the map boards the plane.
+                        initial={reducedMotion ? false : { opacity: 0, scale: 1.3, rotate: -8 }}
+                        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                        transition={{ type: 'spring', stiffness: 420, damping: 18, delay: boardTimes[index] ?? 0 }}
+                    >
+                        {skill}
+                    </m.li>
+                ))}
             </ul>
         </div>
     );

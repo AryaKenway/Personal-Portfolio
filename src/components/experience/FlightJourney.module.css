@@ -22,6 +22,8 @@
     border: 1px solid var(--line);
     border-radius: 1.2rem;
     background: var(--map-ground);
+    /* The map has its own palette; the page's sky text shadow would only smudge it. */
+    text-shadow: none;
 }
 
 .scaler {

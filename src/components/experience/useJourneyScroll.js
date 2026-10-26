@@ -123,7 +123,7 @@ const STAY_WITHIN = 0.2;
  * @param {{ morph: number }} options.spaceState - Flat map (0) → mini planet (1), read by the 3D scene.
  * @param {import('react').RefObject<import('lenis').default | null>} options.lenisRef
  * @param {import('react').RefObject<import('./useSmoothScroll.js').WheelHandler | null>} options.wheelHandlerRef
- * @param {string} options.nextSectionId - Where the wheel outside the map leads (e.g. 'skills').
+ * @param {string} options.nextSectionId - Where the wheel outside the map leads (e.g. 'work').
  * @param {import('./routeGeometry.js').FlightRouteGeometry} options.route
  * @param {import('./useStageFrame.js').StageFrame | null} options.frame
  * @param {boolean} options.reducedMotion

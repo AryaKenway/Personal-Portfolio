@@ -1,19 +1,24 @@
 @import "tailwindcss";
 
+/* The page sits on a night sky (SiteSky), so "ink" is the light text colour of
+   the About panel and "sky" is the dark behind it. Light surfaces (the
+   Experience cards, the project book) set the old paper palette back locally. */
 :root {
-    color-scheme: light;
+    color-scheme: dark;
     font-family: "Aptos", "Segoe UI", sans-serif;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
+    --sky: #0e0d0f;
     --paper: #f4f0e8;
     --paper-shade: #e9e2d6;
-    --ink: #25231f;
-    --ink-soft: #57534c;
-    --muted: #797367;
-    --line: #d5cdbf;
-    --accent: #a44332;
-    --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+    --ink: #ece6da;
+    --ink-soft: #d3ccbf;
+    --muted: #a8a093;
+    --line: rgb(236 230 218 / 0.16);
+    --accent: #f08a6c;
+    --text-shadow: 0 1px 0.6rem rgb(14 13 15 / 0.85);
     --sans: "Aptos", "Segoe UI", sans-serif;
+    --mono: ui-monospace, "Cascadia Code", "SF Mono", Consolas, "Liberation Mono", monospace;
     --page-width: 74rem;
 }
 
@@ -22,23 +27,26 @@
 }
 
 html {
-    background: var(--paper);
+    background: var(--sky);
 }
 
+/* Transparent so the fixed sky behind it shows through. */
 body {
     min-height: 100vh;
     margin: 0;
-    background: var(--paper);
+    background: transparent;
     color: var(--ink);
     font-family: var(--sans);
     font-size: 1rem;
     line-height: 1.65;
+    text-shadow: var(--text-shadow);
     -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-    color: var(--paper);
+    color: var(--sky);
     background: var(--accent);
+    text-shadow: none;
 }
 
 a {
@@ -55,54 +63,9 @@ a:hover {
     outline-offset: 4px;
 }
 
-.site-header,
-.site-main,
-.site-footer {
+.site-main {
     width: min(var(--page-width), calc(100% - 2.5rem));
     margin-inline: auto;
-}
-
-.site-header {
-    display: flex;
-    min-height: 4.75rem;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    border-bottom: 1px solid var(--line);
-}
-
-.site-brand {
-    color: var(--ink);
-    font-family: var(--serif);
-    font-size: 1.12rem;
-    font-weight: 700;
-    letter-spacing: -0.035em;
-    text-decoration: none;
-    white-space: nowrap;
-}
-
-.site-nav {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 0.35rem 1.25rem;
-}
-
-.site-nav a {
-    color: var(--ink-soft);
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-decoration: none;
-    text-transform: uppercase;
-}
-
-.site-nav a:hover,
-.site-nav a[aria-current="page"] {
-    color: var(--accent);
-}
-
-.site-main {
     padding-block: clamp(2.5rem, 7vw, 5.5rem);
 }
 
@@ -120,81 +83,70 @@ a:hover {
     max-width: 47rem;
 }
 
-.eyebrow {
-    margin: 0 0 0.55rem;
-    color: var(--accent);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.11em;
-    line-height: 1.4;
-    text-transform: uppercase;
-}
-
 .profile-name {
     margin: 0;
     color: var(--ink);
-    font-family: var(--serif);
+    font-family: var(--sans);
     font-size: clamp(2.5rem, 8vw, 5.25rem);
     font-weight: 500;
-    letter-spacing: -0.065em;
+    letter-spacing: -0.04em;
     line-height: 0.98;
 }
 
-.profile-lede {
-    max-width: 31rem;
-    margin: 1.15rem 0 0;
-    color: var(--ink-soft);
-    font-family: var(--serif);
-    font-size: clamp(1.2rem, 3vw, 1.55rem);
-    line-height: 1.45;
+.msdf-name {
+    position: relative;
 }
 
-.profile-affiliation {
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-    margin-top: 1rem;
+.msdf-name__baseline {
+    display: inline-block;
+    width: 0;
+    height: 0;
 }
 
-.profile-logo {
-    width: 2rem;
-    height: 2rem;
-    object-fit: contain;
+.msdf-name--ready {
+    color: transparent;
 }
 
-.profile-meta {
-    margin: 0;
-    color: var(--muted);
-    font-size: 0.92rem;
+.msdf-name canvas {
+    position: absolute;
+    pointer-events: none;
 }
 
 .social-links {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.5rem 1rem;
+    gap: 0.5rem;
 }
 
+/* Round icon buttons, 44px so they're comfortable touch targets. */
 .social-links a {
-    padding-block: 0.35rem;
+    display: inline-grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 50%;
     color: var(--ink-soft);
-    font-size: 0.88rem;
-    font-weight: 600;
-    text-decoration-color: var(--line);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.25em;
-    transition: color 160ms ease, text-decoration-color 160ms ease;
+    background: rgb(22 20 15 / 0.35);
+    transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease;
 }
 
 .social-links a:hover {
+    border-color: var(--accent);
     color: var(--accent);
-    text-decoration-color: var(--accent);
+    background: rgb(240 138 108 / 0.1);
+}
+
+.social-links svg {
+    width: 1.2rem;
+    height: 1.2rem;
 }
 
 .section-title {
     margin: 0 0 1rem;
     color: var(--ink);
-    font-family: var(--serif);
+    font-family: var(--sans);
     font-size: clamp(1.6rem, 4vw, 2.2rem);
     font-weight: 500;
     letter-spacing: -0.035em;
@@ -247,8 +199,43 @@ a:hover {
     margin-bottom: 0;
 }
 
+/* Skills: the heading sits above the terminal at every size, and the terminal takes the full width. */
+.skills-section {
+    grid-template-columns: minmax(0, 1fr);
+    /* Heading to tour: the same gap as the Experience heading to its map (ExperienceSection.module.css). */
+    row-gap: 1.25rem;
+}
+
+@media (max-width: 639px) {
+    .skills-section {
+        row-gap: 0.8rem;
+    }
+}
+
+/* About: heading on top; text on the left and the game deck on the right (stacked on phones). */
+.about-section {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 1rem;
+    /* A swiped game card can slide past the edge on small phones; never let it scroll the page. */
+    overflow-x: clip;
+}
+
+.about-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    column-gap: clamp(2rem, 6vw, 5rem);
+}
+
 .about-copy {
     max-width: 42rem;
+}
+
+@media (max-width: 47.99rem) {
+    .about-body {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 1.5rem;
+    }
 }
 
 .about-text {
@@ -259,8 +246,7 @@ a:hover {
     margin-top: 1rem;
 }
 
-.experience-list,
-.skill-groups {
+.experience-list {
     min-width: 0;
 }
 
@@ -285,7 +271,7 @@ a:hover {
 }
 
 .experience-details .job-title {
-    font-family: var(--serif);
+    font-family: var(--sans);
     font-size: 1.3rem;
     font-weight: 500;
     letter-spacing: -0.02em;
@@ -306,46 +292,16 @@ a:hover {
     margin-top: 0.45rem;
 }
 
-.skill-groups {
-    border-top: 1px solid var(--line);
-}
-
-.skill-group {
-    display: grid;
-    grid-template-columns: minmax(8rem, 0.65fr) minmax(0, 1.8fr);
-    column-gap: clamp(1rem, 3vw, 2.5rem);
-    padding-block: 0.95rem;
-    border-bottom: 1px solid var(--line);
-}
-
-.skill-group .section-subtitle {
-    margin: 0.1rem 0;
-    color: var(--muted);
-    font-size: 0.8rem;
-    font-weight: 650;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-}
-
-.skill-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem 0;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.skill-list li {
-    color: var(--ink-soft);
-    font-size: 0.9rem;
-    line-height: 1.65;
-}
-
-.skill-list li + li::before {
-    padding-inline: 0.55rem;
-    color: var(--accent);
-    content: "·";
+/* Light surfaces: back to dark text, without the sky's text shadow. */
+.project-card,
+.project-flip-page,
+.project-popup-panel {
+    --ink: #25231f;
+    --ink-soft: #57534c;
+    --muted: #797367;
+    --line: #d5cdbf;
+    --accent: #a44332;
+    text-shadow: none;
 }
 
 .project-card {
@@ -482,12 +438,16 @@ a:hover {
     background-image: linear-gradient(145deg, #283c3a, #182725 72%);
 }
 
+/* page-flip sets `display: block` inline on every page, so the cover's grid centring never applies:
+   the content fills the cover itself and centres its stack on both axes. */
 .project-cover-content {
+    position: absolute;
+    inset: 28px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 18px;
-    max-width: 100%;
 }
 
 .project-cover-label {
@@ -499,7 +459,7 @@ a:hover {
 
 .project-cover h3 {
     margin: 0;
-    font-family: Georgia, 'Times New Roman', serif;
+    font-family: var(--sans);
     font-size: clamp(2rem, 5vw, 3.25rem);
     line-height: 1.1;
 }
@@ -554,46 +514,142 @@ a:hover {
     color: #34312e;
 }
 
+/* A video project's thumbnail on the page, with a YouTube-style play badge. */
+.project-video-thumb {
+    position: relative;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: #000;
+}
+
+.project-video-thumb img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.project-video-play {
+    position: relative;
+    display: grid;
+    width: 64px;
+    height: 44px;
+    place-items: center;
+    border-radius: 12px;
+    background: #ff0033;
+    box-shadow: 0 6px 18px rgb(0 0 0 / 0.35);
+}
+
+.project-video-play svg {
+    width: 26px;
+    height: 26px;
+    fill: #fff;
+}
+
 .project-book .project-flip-content > div:last-child {
     flex: 1;
-    padding-bottom: 2.5rem;
+    padding-bottom: 3.6rem;
+}
+
+/* The whole page opens its details: a zoom cursor, a chip on the picture and a pulsing button. */
+.project-flip-page:not(.project-cover) {
+    cursor: zoom-in;
+}
+
+.project-page-hint {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.38rem 0.7rem;
+    border-radius: 999px;
+    color: #fff;
+    background: rgb(20 18 15 / 0.72);
+    box-shadow: 0 4px 14px rgb(0 0 0 / 0.25);
+    font-size: 0.72rem;
+    font-weight: 650;
+    letter-spacing: 0.02em;
+    pointer-events: none;
+    transition: background-color 200ms ease, transform 200ms ease;
+}
+
+.project-flip-page:hover .project-page-hint {
+    background: #a44332;
+    transform: scale(1.06);
 }
 
 .project-page-details {
     position: absolute;
     left: 20px;
-    bottom: 10px;
+    bottom: 14px;
     display: inline-flex;
+    min-height: 2.5rem;
     align-items: center;
-    gap: 0.3rem;
-    padding: 0;
+    gap: 0.45rem;
+    padding: 0 1.05rem;
     border: 0;
-    color: #a44332;
-    background: none;
-    font-size: 0.8rem;
-    font-weight: 650;
+    border-radius: 999px;
+    color: #fff;
+    background: #a44332;
+    box-shadow: 0 6px 16px rgb(164 67 50 / 0.35);
+    font-size: 0.85rem;
+    font-weight: 700;
     letter-spacing: 0.02em;
     cursor: pointer;
+    transition: background-color 200ms ease, transform 200ms ease;
 }
 
-.project-page-details:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+/* A soft ring that keeps pulsing outward, so the button reads as "open me". */
+.project-page-details::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 0 0 rgb(164 67 50 / 0.5);
+    animation: project-details-pulse 2.2s ease-out infinite;
+    pointer-events: none;
+}
+
+.project-page-details:hover,
+.project-flip-page:hover .project-page-details {
+    background: #8c3426;
+    transform: translateY(-1px);
 }
 
 .project-page-details:focus-visible {
-    outline: 2px solid #a44332;
+    outline: 2px solid #25231f;
     outline-offset: 3px;
 }
 
-.project-page-details svg {
-    width: 14px;
-    height: 14px;
+.project-page-details svg,
+.project-page-hint svg {
+    width: 15px;
+    height: 15px;
     fill: none;
     stroke: currentColor;
-    stroke-width: 2;
+    stroke-width: 2.2;
     stroke-linecap: round;
     stroke-linejoin: round;
+}
+
+.project-page-hint svg {
+    width: 13px;
+    height: 13px;
+}
+
+@keyframes project-details-pulse {
+    0% { box-shadow: 0 0 0 0 rgb(164 67 50 / 0.5); }
+    70%, 100% { box-shadow: 0 0 0 12px rgb(164 67 50 / 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .project-page-details::after {
+        animation: none;
+    }
 }
 
 /* The page stays in the book's layout but hides while its popup copy is lifted out. */
@@ -683,6 +739,21 @@ a:hover {
     object-fit: cover;
 }
 
+/* Several screenshots side by side, shown whole on a dark strip (columns set inline). */
+.project-detail-gallery {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr);
+    gap: 0.6rem;
+    padding: 0.6rem;
+    background: #0b0b0d;
+}
+
+.project-detail-gallery img {
+    min-width: 0;
+    min-height: 0;
+    object-fit: contain;
+}
+
 .project-detail-body {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 15.5rem;
@@ -701,7 +772,7 @@ a:hover {
 
 .project-detail-title {
     margin: 0.5rem 0 0.75rem;
-    font-family: Georgia, 'Times New Roman', serif;
+    font-family: var(--sans);
     font-size: clamp(1.6rem, 3.2vw, 2.25rem);
     line-height: 1.15;
 }
@@ -834,6 +905,22 @@ a:hover {
     background: transparent;
 }
 
+.project-detail-link--secondary:hover {
+    color: #fff;
+}
+
+/* A YouTube player filling the media strip. */
+.project-detail-video {
+    background: #000;
+}
+
+.project-detail-video iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
 .project-detail-link svg {
     width: 18px;
     height: 18px;
@@ -925,6 +1012,10 @@ a:hover {
     .project-cover::before {
         inset: 10px;
     }
+
+    .project-cover-content {
+        inset: 22px;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -936,48 +1027,11 @@ a:hover {
 .project-zone {
     margin-top: clamp(3rem, 7vw, 5rem);
     padding: clamp(1.25rem, 4vw, 2.5rem);
+    border: 1px solid var(--line);
     border-radius: 0.25rem;
-    background: #292722;
-    color: var(--paper);
-}
-
-.project-zone .section-title {
-    color: var(--paper);
-}
-
-.more-page-link {
-    margin-top: 2rem;
-    text-align: right;
-}
-
-.more-page-link a {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
+    /* No backdrop-filter here: it would trap the fixed project popup inside the zone. */
+    background: rgb(22 20 15 / 0.62);
     color: var(--ink);
-    font-size: 0.9rem;
-    font-weight: 650;
-    text-decoration-color: var(--accent);
-    text-decoration-thickness: 1px;
-}
-
-.more-page-link a:hover {
-    color: var(--accent);
-}
-
-.site-footer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.5rem 1rem;
-    padding-block: 1.25rem 2rem;
-    border-top: 1px solid var(--line);
-    color: var(--muted);
-    font-size: 0.82rem;
-}
-
-.site-footer p {
-    margin: 0;
 }
 
 .scroll-reveal[data-reveal-state="pending"] {
@@ -992,48 +1046,7 @@ a:hover {
     transition: opacity 420ms ease-out, transform 420ms ease-out;
 }
 
-.cursor-dot {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    width: 0.45rem;
-    height: 0.45rem;
-    border: 1px solid var(--paper);
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 0 1px rgb(37 35 31 / 15%);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 120ms ease, scale 140ms ease;
-    will-change: transform;
-}
-
-.cursor-dot[data-enabled="false"] {
-    display: none;
-}
-
-.cursor-dot[data-visible="true"] {
-    opacity: 1;
-}
-
-.cursor-dot[data-hover="true"] {
-    scale: 1.65;
-}
-
 @media (max-width: 38rem) {
-    .site-header {
-        align-items: flex-start;
-        flex-direction: column;
-        justify-content: center;
-        padding-block: 1rem;
-    }
-
-    .site-nav {
-        justify-content: flex-start;
-        gap: 0.35rem 1rem;
-    }
-
     .site-main {
         padding-top: 2.5rem;
     }
@@ -1048,8 +1061,7 @@ a:hover {
         row-gap: 0.85rem;
     }
 
-    .experience-item,
-    .skill-group {
+    .experience-item {
         grid-template-columns: minmax(0, 1fr);
         row-gap: 0.3rem;
     }
@@ -1074,18 +1086,8 @@ a:hover {
         transition-duration: 0.01ms !important;
     }
 
-    .cursor-dot {
-        display: none;
-    }
-
     .scroll-reveal[data-reveal-state="pending"] {
         opacity: 1;
         transform: none;
-    }
-}
-
-@media (pointer: coarse) {
-    .cursor-dot {
-        display: none;
     }
 }

@@ -1,7 +1,12 @@
-export default function ProjectCard({ title, description, image, href }) {
+export default function ProjectCard({ title, description, image, imagePosition, youtube, href }) {
     return <article className="project-card project-flip-content">
-        {image && <img src={image} alt={title} className="project-img" />}
-        {!image && <div className="project-video-placeholder" role="img" aria-label={`${title} video placeholder`}><span>Video placeholder</span></div>}
+        {image && <img src={image} alt={title} className="project-img" style={imagePosition ? { objectPosition: imagePosition } : undefined} />}
+        {/* The video's thumbnail with a play badge; the player itself is in the popup (an iframe would swallow page drags). */}
+        {!image && youtube && <div className="project-img project-video-thumb">
+            <img src={`https://i.ytimg.com/vi/${youtube}/hqdefault.jpg`} alt={`${title} video`} loading="lazy" />
+            <span className="project-video-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg></span>
+        </div>}
+        {!image && !youtube && <div className="project-video-placeholder" role="img" aria-label={`${title} video placeholder`}><span>Video placeholder</span></div>}
         <div className="p-5">
             <h3 className="project-title">{title}</h3>
             <p className="project-desc">{description}</p>

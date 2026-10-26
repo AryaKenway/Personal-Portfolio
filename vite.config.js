@@ -12,8 +12,7 @@ export default defineConfig({
     build: {
         rollupOptions: {
             input: {
-                home: resolve(rootDirectory, 'index.html'),
-                more: resolve(rootDirectory, 'more.html')
+                home: resolve(rootDirectory, 'index.html')
             }
         }
     }

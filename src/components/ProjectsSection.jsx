@@ -20,11 +20,14 @@ const CoverPage = forwardRef(function CoverPage({ isBack = false }, ref) {
     return <div className={`project-flip-page project-cover ${isBack ? 'project-cover-back' : 'project-cover-front'}`} ref={ref}>
         <div className="project-cover-content">
             <span className="project-cover-label">{isBack ? 'THE END' : 'PORTFOLIO • SELECTED WORKS'}</span>
-            <h3>{isBack ? 'Thanks for reading.' : 'Project Showcase'}</h3>
+            <h3>{isBack ? 'Thanks for reading.' : 'Project Showcases'}</h3>
             <span className="project-cover-author">{isBack ? 'Arya Acharya' : 'Arya Acharya · 2026'}</span>
         </div>
     </div>;
 });
+
+// Two corner arrows pointing outward (lucide "maximize-2").
+const EXPAND_ICON = 'M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7';
 
 // Clicking anywhere on the page opens its details; the button is the visible, keyboard-reachable way in.
 const ProjectPage = forwardRef(function ProjectPage({ project, number, onPointerDown, onOpen }, ref) {
@@ -38,14 +41,19 @@ const ProjectPage = forwardRef(function ProjectPage({ project, number, onPointer
         }}
     >
         <ProjectCard {...project} />
+        {/* A chip on the picture: the whole page opens, not just the button. */}
+        <span className="project-page-hint" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d={EXPAND_ICON} /></svg>
+            Click to expand
+        </span>
         <button
             type="button"
             className="project-page-details"
             onClick={(event) => onOpen(event.currentTarget.closest('.project-flip-page'))}
-            aria-label={`View details for ${project.title}`}
+            aria-label={`Open full details for ${project.title}`}
         >
-            View details
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d={EXPAND_ICON} /></svg>
+            Open full view
         </button>
         <span className="project-page-number">{String(number).padStart(2, '0')}</span>
     </div>;
@@ -167,7 +175,7 @@ export default function ProjectsSection() {
         openPage.returnFocus?.focus({ preventScroll: true });
         setOpenPage(null);
     };
-    return <section aria-label="Project showcase">
+    return <section aria-label="Project showcases">
         <div
             className={`project-book ${!isPortrait && bookPositionIndex === 0 ? 'project-book--front-cover' : ''} ${!isPortrait && bookPositionIndex >= backCoverIndex ? 'project-book--back-cover' : ''} ${isSliding ? 'project-book--sliding' : ''}`}
             aria-label="Project book"

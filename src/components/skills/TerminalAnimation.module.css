@@ -1,0 +1,232 @@
+/* Always dark: the terminal is the one dark surface on the light paper page. */
+.root {
+    --term-bg: #16140f;
+    --term-bar: #201d17;
+    --term-line: #34302a;
+    --term-text: #ece6da;
+    --term-muted: #9a9284;
+    --term-accent: #f08a6c;
+    --term-added: #9ad7a4;
+    --term-focus: #f5c26b;
+
+    min-width: 0;
+    color: var(--term-text);
+    font-family: var(--mono);
+    font-size: clamp(0.78rem, 0.72rem + 0.25vw, 0.9rem);
+    line-height: 1.6;
+}
+
+.window {
+    overflow: hidden;
+    border: 1px solid var(--term-line);
+    border-radius: 0.9rem;
+    background: var(--term-bg);
+    box-shadow: 0 1.5rem 3rem -1.5rem rgb(37 35 31 / 0.45);
+}
+
+/* Slide-up on first view (Cult UI's easing). Small offset so it never overlaps the next section. */
+.windowWaiting {
+    opacity: 0;
+    transform: translateY(4rem);
+}
+
+.windowEntered {
+    opacity: 1;
+    transform: none;
+    transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease-out;
+}
+
+.titleBar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.4rem;
+    padding-inline: 1rem;
+    border-bottom: 1px solid var(--term-line);
+    background: var(--term-bar);
+}
+
+.dots {
+    position: absolute;
+    left: 1rem;
+    display: flex;
+    gap: 0.45rem;
+}
+
+.dots span {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background: #ff5f57;
+}
+
+.dots span:nth-child(2) {
+    background: #febc2e;
+}
+
+.dots span:nth-child(3) {
+    background: #28c840;
+}
+
+.title {
+    overflow: hidden;
+    padding-inline: 3.5rem;
+    color: var(--term-muted);
+    font-size: 0.78em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tabList {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    padding: 0.7rem clamp(0.9rem, 3vw, 1.6rem) 0;
+}
+
+.tab {
+    min-height: 2.75rem;
+    padding: 0.35rem 0.8rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--term-muted);
+    font: inherit;
+    font-size: 0.86em;
+    cursor: pointer;
+    transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease;
+}
+
+.tab:hover {
+    color: var(--term-text);
+}
+
+.tab[aria-selected="true"] {
+    border-color: var(--term-line);
+    background: var(--term-bar);
+    color: var(--term-text);
+}
+
+.tab:focus-visible,
+.panel:focus-visible {
+    outline: 2px solid var(--term-focus);
+    outline-offset: 2px;
+}
+
+.content {
+    padding: 1rem clamp(0.9rem, 3vw, 1.6rem) 1.3rem;
+}
+
+.commandBar {
+    display: flex;
+    gap: 0.65em;
+    overflow-wrap: anywhere;
+}
+
+.prompt {
+    color: var(--term-accent);
+    font-weight: 700;
+}
+
+.cursor {
+    display: inline-block;
+    width: 0.6em;
+    height: 1.15em;
+    margin-left: 0.1em;
+    background: var(--term-text);
+    vertical-align: text-bottom;
+    animation: caret-blink 1s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Opacity, not visibility: a line must never override its hidden (inactive) panel. */
+.line {
+    opacity: 0;
+}
+
+.lineVisible {
+    opacity: 1;
+    transition: opacity 160ms ease-out;
+}
+
+/* All panels share one cell: the tallest output sets the height, so tabs never jump. */
+.output {
+    display: grid;
+    margin-top: 0.8rem;
+}
+
+.panel {
+    grid-area: 1 / 1;
+    min-width: 0;
+    border-radius: 0.3rem;
+    visibility: hidden;
+}
+
+.panelActive {
+    visibility: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cursor {
+        animation: none;
+    }
+}
+
+/* Short screens (phone landscape): tighter chrome and rows so the tallest group still fits. */
+@media (max-height: 30rem) {
+    .root {
+        line-height: 1.4;
+    }
+
+    .titleBar {
+        min-height: 1.9rem;
+    }
+
+    .tabList {
+        padding-top: 0.35rem;
+    }
+
+    .content {
+        padding-block: 0.5rem 0.8rem;
+    }
+
+    .output {
+        margin-top: 0.5rem;
+    }
+}
+
+/* Phones: one swipeable row of tabs instead of wrapping onto a second row, so the output keeps its room. */
+@media (max-width: 38rem) {
+    .root {
+        font-size: 0.75rem;
+        line-height: 1.5;
+    }
+
+    .tabList {
+        flex-wrap: nowrap;
+        gap: 0.2rem;
+        overflow-x: auto;
+        scrollbar-width: none;
+        mask-image: linear-gradient(to right, #000 85%, transparent);
+    }
+
+    .tabList::-webkit-scrollbar {
+        display: none;
+    }
+
+    .tab {
+        flex: none;
+        padding-inline: 0.6rem;
+    }
+
+    .content {
+        padding-top: 0.8rem;
+    }
+}

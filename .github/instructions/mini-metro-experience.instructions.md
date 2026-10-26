@@ -62,7 +62,7 @@ GitHub Pages/responsive requirements and the phase checklist.
 - **Proportional scrolling (Phase 8).** The plane moves exactly as far as the visitor scrolls, with no
   snapping and no settling. Don't add GSAP `snap` or any settle-to-stop logic. While pinned, the wheel
   over the map scrubs, and the wheel anywhere else leaves the journey **without playing it** (down →
-  Skills, up → Experience top): fade the map, jump past the pinned stretch with the scrub tween
+  Selected work `#work`, the next section since Skills moved above Experience; up → Experience top): fade the map, jump past the pinned stretch with the scrub tween
   finished and step reports muted, then glide the last bit (`leaveJourney`). Never glide through the
   pinned stretch, which would replay the whole animation at speed. Only the rest of that one gesture
   may be absorbed. Never trap the page, and never `preventDefault()` touch events.
