@@ -200,15 +200,19 @@ a:hover {
 }
 
 /* Skills: the heading sits above the terminal at every size, and the terminal takes the full width. */
-.skills-section {
+.content-section.skills-section {
+    /* The map's frame pads its top by this much (.pinFrame in FlightJourney.module.css). */
+    --experience-map-inset: clamp(0.75rem, 2.5svh, 1.5rem);
+
     grid-template-columns: minmax(0, 1fr);
-    /* Heading to tour: the same gap as the Experience heading to its map (ExperienceSection.module.css). */
-    row-gap: 1.25rem;
+    /* Heading to tour: the same gap as the Experience heading to its map, i.e. the heading's
+       margin (ExperienceSection.module.css) plus the map frame's top padding. */
+    row-gap: calc(1.25rem + var(--experience-map-inset));
 }
 
 @media (max-width: 639px) {
-    .skills-section {
-        row-gap: 0.8rem;
+    .content-section.skills-section {
+        row-gap: calc(0.8rem + var(--experience-map-inset));
     }
 }
 
@@ -523,7 +527,8 @@ a:hover {
     background: #000;
 }
 
-.project-video-thumb img {
+.project-video-thumb img,
+.project-video-thumb video {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -558,27 +563,32 @@ a:hover {
     cursor: zoom-in;
 }
 
+/* The expand chip and "Open full view" button share one space accent, set here: a midnight-to-violet
+   nebula (the night sky's own colours). */
+.project-flip-page {
+    --project-open-accent: linear-gradient(135deg, #1f2560 0%, #4a3a9e 55%, #7a4fc4 100%);
+    --project-open-accent-hover: linear-gradient(135deg, #2a3280 0%, #5d48c0 55%, #9461e0 100%);
+    --project-open-accent-rgb: 122 79 196;
+}
+
 .project-page-hint {
     position: absolute;
     top: 12px;
     right: 12px;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.38rem 0.7rem;
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
     border-radius: 999px;
     color: #fff;
     background: rgb(20 18 15 / 0.72);
     box-shadow: 0 4px 14px rgb(0 0 0 / 0.25);
-    font-size: 0.72rem;
-    font-weight: 650;
-    letter-spacing: 0.02em;
     pointer-events: none;
     transition: background-color 200ms ease, transform 200ms ease;
 }
 
 .project-flip-page:hover .project-page-hint {
-    background: #a44332;
+    background: var(--project-open-accent);
     transform: scale(1.06);
 }
 
@@ -594,8 +604,8 @@ a:hover {
     border: 0;
     border-radius: 999px;
     color: #fff;
-    background: #a44332;
-    box-shadow: 0 6px 16px rgb(164 67 50 / 0.35);
+    background: var(--project-open-accent);
+    box-shadow: 0 6px 16px rgb(var(--project-open-accent-rgb) / 0.35);
     font-size: 0.85rem;
     font-weight: 700;
     letter-spacing: 0.02em;
@@ -609,14 +619,14 @@ a:hover {
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    box-shadow: 0 0 0 0 rgb(164 67 50 / 0.5);
+    box-shadow: 0 0 0 0 rgb(var(--project-open-accent-rgb) / 0.5);
     animation: project-details-pulse 2.2s ease-out infinite;
     pointer-events: none;
 }
 
 .project-page-details:hover,
 .project-flip-page:hover .project-page-details {
-    background: #8c3426;
+    background: var(--project-open-accent-hover);
     transform: translateY(-1px);
 }
 
@@ -642,8 +652,8 @@ a:hover {
 }
 
 @keyframes project-details-pulse {
-    0% { box-shadow: 0 0 0 0 rgb(164 67 50 / 0.5); }
-    70%, 100% { box-shadow: 0 0 0 12px rgb(164 67 50 / 0); }
+    0% { box-shadow: 0 0 0 0 rgb(var(--project-open-accent-rgb) / 0.5); }
+    70%, 100% { box-shadow: 0 0 0 12px rgb(var(--project-open-accent-rgb) / 0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -737,6 +747,15 @@ a:hover {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+/* A single picture is shown whole on a dark strip rather than cropped to fill it. */
+.project-detail-media--image {
+    background: #0b0b0d;
+}
+
+.project-detail-media--image img {
+    object-fit: contain;
 }
 
 /* Several screenshots side by side, shown whole on a dark strip (columns set inline). */
@@ -921,6 +940,51 @@ a:hover {
     border: 0;
 }
 
+/* Local videos: a row of tabs above a native player that fills the rest of the strip. */
+.project-detail-player {
+    display: flex;
+    flex-direction: column;
+    height: clamp(240px, 48vh, 440px);
+}
+
+.project-detail-player video {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    background: #000;
+    object-fit: contain;
+}
+
+.project-detail-video-tabs {
+    display: flex;
+    gap: 0.4rem;
+    padding: 0.5rem 0.6rem;
+    background: #0b0b0d;
+}
+
+.project-detail-video-tab {
+    padding: 0.35rem 0.8rem;
+    border: 1px solid #3a3733;
+    border-radius: 999px;
+    color: #cfc8bc;
+    background: transparent;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.project-detail-video-tab:hover {
+    color: #fff;
+    border-color: #6b6258;
+}
+
+.project-detail-video-tab[aria-selected="true"] {
+    color: #25231f;
+    background: #f4f0e8;
+    border-color: #f4f0e8;
+}
+
 .project-detail-link svg {
     width: 18px;
     height: 18px;
@@ -990,7 +1054,10 @@ a:hover {
 }
 
 @media (max-width: 640px) {
+    /* One page at a time here, and a page is at most 420px wide (maxWidth on the flip book):
+       no wider than that plus the padding, or the cover sits in a wide brown band. */
     .project-book {
+        max-width: calc(420px + 20px);
         padding: 10px;
     }
 
@@ -999,10 +1066,50 @@ a:hover {
         transform: translate3d(0, 0, 0);
     }
 
+    /* A turning page in one-page mode swings far past the screen's side. Left unclipped, that
+       widens the page for the length of the flip, a phone browser zooms out to fit it, and the
+       scroll position lands back in the Experience section. (clip, not hidden: no scroll box.) */
+    .project-zone {
+        overflow-x: clip;
+    }
+
+    /* The flip library sets an inline 280px min-width, which pushes the book past its frame on
+       narrow phones. It already switches to one page below twice that, so the floor isn't needed.
+       Its 360px min-height likewise leaves empty bands above and below a shorter page. */
+    .project-flipbook {
+        min-width: 0 !important;
+        min-height: 0 !important;
+    }
+
+    /* A phone page is short: the text keeps its natural height (tightened so it fits above the
+       "Open full view" button) and the picture fills whatever height is left, not a fixed 200px. */
     .project-book .project-img,
     .project-book .project-video-placeholder {
-        height: 200px;
-        flex-basis: 200px;
+        height: auto;
+        min-height: 30%;
+        flex: 1 1 0;
+    }
+
+    .project-book .project-flip-content > div:last-child {
+        flex: none;
+        padding: 0.85rem 1rem 3.4rem;
+    }
+
+    .project-book .project-title {
+        font-size: 1.05rem;
+        line-height: 1.3;
+    }
+
+    /* At most three lines on the page; the popup has the rest. */
+    .project-book .project-desc {
+        display: -webkit-box;
+        margin: 0.3rem 0 0.6rem;
+        overflow: hidden;
+        font-size: 0.88rem;
+        line-height: 1.45;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
     }
 
     .project-cover {

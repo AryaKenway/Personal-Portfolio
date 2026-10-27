@@ -8,20 +8,62 @@ import pageFlipSound from '../assets/projects/page-flip.mp3';
 
 // page-flip.mp3 opens with ~0.8s of silence; skip it so the rustle lands with the flip. Update if the file changes.
 const PAGE_TURN_SOUND_START = 0.75;
+const PAGE_TURN_VOLUME = 0.3;
+// A page let go before it turns cuts its sound off with this short fade, not a hard click.
+const PAGE_TURN_FADE_MS = 120;
+// Holding a page plays only this share of the rustle; letting go plays the rest.
+const PAGE_TURN_HOLD_SHARE = 3 / 8;
 
 // Rewinds rather than overlapping, so quick successive flips never stack up.
 function playPageTurn(audio) {
     if (!audio) return;
+    cancelAnimationFrame(audio.fadeFrame);
+    clearTimeout(audio.holdTimer);
+    audio.volume = PAGE_TURN_VOLUME;
     audio.currentTime = PAGE_TURN_SOUND_START;
     audio.play().catch(() => {});
+}
+
+// Call right after playPageTurn: pauses once the held share has played.
+function holdPageTurn(audio) {
+    if (!audio) return;
+    const length = audio.duration - PAGE_TURN_SOUND_START;
+    if (!Number.isFinite(length)) return;
+    audio.holdTimer = setTimeout(() => audio.pause(), length * PAGE_TURN_HOLD_SHARE * 1000);
+}
+
+// Plays the rest of a held sound (or lets it run on, if the hold hadn't been reached yet).
+function releasePageTurn(audio) {
+    if (!audio) return;
+    clearTimeout(audio.holdTimer);
+    if (audio.paused && !audio.ended) audio.play().catch(() => {});
+}
+
+function stopPageTurn(audio) {
+    if (!audio) return;
+    clearTimeout(audio.holdTimer);
+    if (audio.paused) return;
+    const start = performance.now();
+    const fade = (now) => {
+        const progress = Math.min((now - start) / PAGE_TURN_FADE_MS, 1);
+        audio.volume = PAGE_TURN_VOLUME * (1 - progress);
+        if (progress < 1) {
+            audio.fadeFrame = requestAnimationFrame(fade);
+            return;
+        }
+        audio.pause();
+        audio.volume = PAGE_TURN_VOLUME;
+    };
+    cancelAnimationFrame(audio.fadeFrame);
+    audio.fadeFrame = requestAnimationFrame(fade);
 }
 
 const CoverPage = forwardRef(function CoverPage({ isBack = false }, ref) {
     return <div className={`project-flip-page project-cover ${isBack ? 'project-cover-back' : 'project-cover-front'}`} ref={ref}>
         <div className="project-cover-content">
-            <span className="project-cover-label">{isBack ? 'THE END' : 'PORTFOLIO • SELECTED WORKS'}</span>
+            {!isBack && <span className="project-cover-label">PORTFOLIO • SELECTED WORKS</span>}
             <h3>{isBack ? 'Thanks for reading.' : 'Project Showcases'}</h3>
-            <span className="project-cover-author">{isBack ? 'Arya Acharya' : 'Arya Acharya · 2026'}</span>
+            {!isBack && <span className="project-cover-author">Arya Acharya · 2026</span>}
         </div>
     </div>;
 });
@@ -44,7 +86,6 @@ const ProjectPage = forwardRef(function ProjectPage({ project, number, onPointer
         {/* A chip on the picture: the whole page opens, not just the button. */}
         <span className="project-page-hint" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d={EXPAND_ICON} /></svg>
-            Click to expand
         </span>
         <button
             type="button"
@@ -78,17 +119,38 @@ export default function ProjectsSection() {
     const pointerStartRef = useRef(null);
     const isFlippingRef = useRef(false);
     const isPageMovingRef = useRef(false);
+    const isPageHeldRef = useRef(false);
+    // Whether the page in motion actually turned (a drag can be let go and fall back).
+    const didTurnRef = useRef(false);
     const pageTurnAudioRef = useRef(null);
     const backCoverIndex = projects.length + 1;
 
     useEffect(() => {
         const audio = new Audio(pageFlipSound);
         audio.preload = 'auto';
-        audio.volume = 0.6;
+        audio.volume = PAGE_TURN_VOLUME;
         pageTurnAudioRef.current = audio;
         return () => {
+            cancelAnimationFrame(audio.fadeFrame);
+            clearTimeout(audio.holdTimer);
             audio.pause();
             pageTurnAudioRef.current = null;
+        };
+    }, []);
+
+    // A dragged page stays 'user_fold' after it's let go (it never reports 'flipping'), so the
+    // release is caught here, as the library itself does, from the pointer coming up anywhere.
+    useEffect(() => {
+        const handleRelease = () => {
+            if (!isPageHeldRef.current) return;
+            isPageHeldRef.current = false;
+            releasePageTurn(pageTurnAudioRef.current);
+        };
+        window.addEventListener('pointerup', handleRelease);
+        window.addEventListener('pointercancel', handleRelease);
+        return () => {
+            window.removeEventListener('pointerup', handleRelease);
+            window.removeEventListener('pointercancel', handleRelease);
         };
     }, []);
 
@@ -110,6 +172,7 @@ export default function ProjectsSection() {
         const wasOnCover = previousPage === 0 || previousPage >= backCoverIndex;
         const isOnCover = currentPage === 0 || currentPage >= backCoverIndex;
         pageIndexRef.current = currentPage;
+        didTurnRef.current = true;
         setProjectIndex(event.data);
         if (wasOnCover === isOnCover) return;
         if (isPortraitRef.current || flippingTimeRef.current === 1) {
@@ -122,8 +185,23 @@ export default function ProjectsSection() {
     const handleFlipState = (event) => {
         const isCurrentlyFlipping = event.data === 'flipping';
         // Buttons, corner clicks and swipes report 'flipping'; dragging a page reports 'user_fold' and never 'flipping'.
-        const isPageMoving = isCurrentlyFlipping || event.data === 'user_fold';
-        if (isPageMoving && !isPageMovingRef.current) playPageTurn(pageTurnAudioRef.current);
+        const isHeld = event.data === 'user_fold';
+        const isPageMoving = isCurrentlyFlipping || isHeld;
+        const audio = pageTurnAudioRef.current;
+        if (isPageMoving && !isPageMovingRef.current) {
+            didTurnRef.current = false;
+            playPageTurn(audio);
+            // A grabbed page plays part of the sound and waits; a button or corner click plays it all.
+            if (isHeld) holdPageTurn(audio);
+        }
+        isPageHeldRef.current = isHeld;
+        // A page dragged partway and let go falls back without turning, so its sound stops there.
+        // Checked a frame later, in case the library reports 'read' before the flip itself.
+        if (!isPageMoving && isPageMovingRef.current) {
+            requestAnimationFrame(() => {
+                if (!didTurnRef.current && !isPageMovingRef.current) stopPageTurn(audio);
+            });
+        }
         isPageMovingRef.current = isPageMoving;
         isFlippingRef.current = isCurrentlyFlipping;
         setIsFlipping(isCurrentlyFlipping);
@@ -134,6 +212,24 @@ export default function ProjectsSection() {
         }
     };
     const handleInit = (event) => {
+        // In one-page (portrait) mode the library turns back by "clicking" a point that isn't on a
+        // page corner, so `disableFlipByClick` makes it ignore its own request: the Previous button
+        // and a swipe right both did nothing. Lift the setting just for that call.
+        const pageFlip = bookRef.current?.pageFlip();
+        if (pageFlip && !pageFlip.flipPrevPatched) {
+            const flipPrev = pageFlip.flipPrev.bind(pageFlip);
+            const settings = pageFlip.getSettings();
+            pageFlip.flipPrev = (...args) => {
+                const disableFlipByClick = settings.disableFlipByClick;
+                settings.disableFlipByClick = false;
+                try {
+                    flipPrev(...args);
+                } finally {
+                    settings.disableFlipByClick = disableFlipByClick;
+                }
+            };
+            pageFlip.flipPrevPatched = true;
+        }
         pageIndexRef.current = event.data.page;
         isPortraitRef.current = event.data.mode === 'portrait';
         setProjectIndex(event.data.page);

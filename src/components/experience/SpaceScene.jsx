@@ -4,7 +4,7 @@
  * the end of the journey.
  * - Phase 12: a copy of the map around the finale is laid flat exactly over the 2D map
  *   (same scale, same pan, same dusk tint), then curls into a mini planet (a plane whose
- *   vertices morph onto a sphere) as the view pulls back into a field of stars.
+ *   vertices morph onto a sphere) as the view pulls back into the site's night sky.
  * - Phase 13: the plane becomes a rocket (Lottie, an HTML layer over the canvas) that
  *   rides to the top of the mini planet, launches, and lands on a second planet, a
  *   recoloured district of the same map: the company the route could reach next.
@@ -17,7 +17,6 @@
 
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Stars } from '@react-three/drei';
 import * as THREE from 'three';
 import rocketUrl from '../../assets/experience/lottie/rocket.json?url';
 import { gsap } from './gsapSetup.js';
@@ -352,7 +351,8 @@ export function SpaceScene({ active, reducedMotion, profile, ...scene }) {
                 gl={{ antialias: true, alpha: true, powerPreference: 'low-power' }}
                 frameloop={active ? 'always' : 'never'}
             >
-                <Stars radius={60} depth={40} count={isPhone ? 1500 : 4000} factor={3} saturation={0} fade speed={reducedMotion ? 0 : 0.6} />
+                {/* No stars of its own: the canvas is transparent and the stage's space tint is
+                    the projects box's, so the site's night sky shows through exactly as it does there. */}
                 <SpaceDirector {...scene} rocketRef={rocketRef} spin={!reducedMotion} />
             </Canvas>
             <div className={styles.rocket} ref={rocketRef}>

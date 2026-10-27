@@ -114,7 +114,7 @@ export function FlightJourney({ milestones }) {
     const isOnScreen = useOnScreen(stageRef);
     const { lenisRef, wheelHandlerRef } = useSmoothScroll(!reducedMotion);
     const frame = useStageFrame(stageRef, route.height, cardReserve);
-    const { scrollToStep } = useJourneyScroll({
+    const { scrollToStep, skipJourney } = useJourneyScroll({
         pinRef,
         stageRef,
         cameraRef,
@@ -166,6 +166,11 @@ export function FlightJourney({ milestones }) {
             {/* LazyMotion + `m.*` components: only the DOM-animation features are bundled. */}
             <LazyMotion features={domAnimation} strict>
             <MotionConfig reducedMotion="user">
+                {/* Touch screens: the same room above the map, back up to the Experience heading. */}
+                <button type="button" className={`${styles.skip} ${styles.skipUp}`} onClick={() => skipJourney(-1)}>
+                    Swipe here or tap to go back up
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" /></svg>
+                </button>
                 <div className={styles.stage} ref={stageRef} style={{ '--card-reserve': `${cardReserve * 100}%` }}>
                     <div
                         className={styles.scaler}
@@ -278,6 +283,12 @@ export function FlightJourney({ milestones }) {
                             : 'Next stop: could be your company.')}
                     </p>
                 </div>
+                {/* Touch screens: room under the map to leave the journey. Tapping skips to the next
+                    section, and a swipe that starts here skips too (see useJourneyScroll). */}
+                <button type="button" className={styles.skip} onClick={() => skipJourney(1)}>
+                    Swipe here or tap to skip the journey
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" /></svg>
+                </button>
             </MotionConfig>
             </LazyMotion>
         </div>

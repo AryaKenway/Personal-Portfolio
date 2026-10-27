@@ -15,7 +15,10 @@
  * - anywhere else on the page: leaves the journey (down → the next section,
  *   up → the top of the Experience section). The rest of that gesture is absorbed
  *   so momentum can't carry on scrolling.
- * Touch, keyboard and the scrollbar scrub natively.
+ * Touch follows the same rule: a swipe on the map scrubs natively, a swipe that starts
+ * outside it (the skip strips above and below the map on touch screens, the margins) leaves
+ * the journey.
+ * Keyboard and the scrollbar scrub natively.
  *
  * Steps: 0..n-1 are the stops, n is the open final destination.
  */
@@ -42,6 +45,8 @@ const STOP_FLIGHT_SECONDS = 1.1;
 const LEAVE_FADE_SECONDS = 0.18;
 const LEAVE_GLIDE_SECONDS = 0.6;
 const LEAVE_RUNUP_VH = 0.3;
+/** How far (px) a touch outside the map must travel vertically before it leaves the journey. */
+const TOUCH_LEAVE_PX = 12;
 
 /**
  * Flight profile of one hop, in fractions of the hop (each hop lasts 1 timeline unit and
@@ -92,9 +97,10 @@ function legMapping(stepCount) {
     };
 }
 
-/** Stage background: the map's grass, then deep space on the last leg. */
+/** Stage background: the map's grass, then deep space on the last leg. Space is the projects
+ * box's translucent tint (`.project-zone`) over the site sky, so both show the same space. */
 const GROUND_COLOR = '#a5c73f';
-const SPACE_COLOR = '#070b1f';
+const SPACE_COLOR = 'rgba(22, 20, 15, 0.62)';
 
 /** Wheel events further apart than this start a new gesture. */
 const WHEEL_GESTURE_GAP_MS = 200;
@@ -160,6 +166,8 @@ export function useJourneyScroll({
     const lastScrollRef = useRef(null);
     /** Element inside the journey that last had focus (restored after a rebuild). */
     const lastFocusedRef = useRef(null);
+    /** Leaves the journey (1 down, -1 up); set while the trigger exists. */
+    const skipRef = useRef(null);
     const stepCount = route.stops.length;
     const leg = useMemo(() => legMapping(stepCount), [stepCount]);
 
@@ -370,8 +378,13 @@ export function useJourneyScroll({
             const target = direction > 0
                 ? document.getElementById(nextSectionId)
                 : pinRef.current.closest('section');
+            if (!target) return;
+            // Lenis is off with reduced motion; the page's own scrolling does the same moves then.
             const lenis = lenisRef.current;
-            if (!target || !lenis) return;
+            const jump = (y) => (lenis ? lenis.scrollTo(y, { immediate: true, force: true }) : window.scrollTo({ top: y, behavior: 'instant' }));
+            const glide = (y) => (lenis
+                ? lenis.scrollTo(y, { duration: LEAVE_GLIDE_SECONDS, easing: easeOutCubic, lock: true, force: true })
+                : window.scrollTo({ top: y, behavior: reducedMotion ? 'instant' : 'smooth' }));
             const margin = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
             const top = target.getBoundingClientRect().top + window.scrollY - margin;
             const runUp = window.innerHeight * LEAVE_RUNUP_VH;
@@ -386,11 +399,11 @@ export function useJourneyScroll({
                 overwrite: true,
                 onComplete() {
                     skipping = true;
-                    lenis.scrollTo(jumpTo, { immediate: true, force: true });
+                    jump(jumpTo);
                     ScrollTrigger.update();
                     trigger.getTween()?.progress(1);
                     skipping = false;
-                    lenis.scrollTo(top, { duration: LEAVE_GLIDE_SECONDS, easing: easeOutCubic, lock: true, force: true });
+                    glide(top);
                     // Going up, the journey's start is back on screen: fade it in during the glide.
                     // Going down it is already off screen.
                     gsap.to(stage, { opacity: 1, duration: direction > 0 ? 0 : LEAVE_GLIDE_SECONDS, ease: 'power1.out' });
@@ -425,8 +438,42 @@ export function useJourneyScroll({
             return absorb();
         };
 
+        // Touch: the same rule as the wheel. A swipe that starts outside the map while pinned (the
+        // skip strip under it, the margins) leaves the journey instead of scrubbing it; the page
+        // doesn't scroll under that finger, so momentum can't carry on into the journey.
+        let swipe = null;
+        const onTouchStart = (event) => {
+            const outside = trigger.isActive && !stageRef.current?.contains(event.target) && event.touches.length === 1;
+            swipe = outside ? { y: event.touches[0].clientY, left: false } : null;
+        };
+        const onTouchMove = (event) => {
+            if (!swipe) return;
+            if (event.cancelable) event.preventDefault();
+            const deltaY = swipe.y - event.touches[0].clientY;
+            if (swipe.left || Math.abs(deltaY) < TOUCH_LEAVE_PX || performance.now() < leavingUntil) return;
+            swipe.left = true;
+            leavingUntil = performance.now() + (LEAVE_FADE_SECONDS + LEAVE_GLIDE_SECONDS) * 1000;
+            // Finger up = scrolling down = on to the next section.
+            leaveJourney(Math.sign(deltaY));
+        };
+        const onTouchEnd = () => { swipe = null; };
+        window.addEventListener('touchstart', onTouchStart, { passive: true });
+        window.addEventListener('touchmove', onTouchMove, { passive: false });
+        window.addEventListener('touchend', onTouchEnd);
+        window.addEventListener('touchcancel', onTouchEnd);
+        skipRef.current = (direction) => {
+            if (performance.now() < leavingUntil) return;
+            leavingUntil = performance.now() + (LEAVE_FADE_SECONDS + LEAVE_GLIDE_SECONDS) * 1000;
+            leaveJourney(direction);
+        };
+
         const pin = pinRef.current;
         return () => {
+            window.removeEventListener('touchstart', onTouchStart);
+            window.removeEventListener('touchmove', onTouchMove);
+            window.removeEventListener('touchend', onTouchEnd);
+            window.removeEventListener('touchcancel', onTouchEnd);
+            skipRef.current = null;
             // Freeze the remembered position before the trigger is killed (kill fires callbacks).
             measuring = true;
             ScrollTrigger.removeEventListener('refreshInit', onMeasureStart);
@@ -438,7 +485,10 @@ export function useJourneyScroll({
         };
     }, { dependencies: [route, frame, reducedMotion, stepCount, scrollToStep, nextSectionId], revertOnUpdate: true });
 
-    return { scrollToStep };
+    /** Leaves the journey without playing it (the skip strips): 1 → the next section, -1 → back up. */
+    const skipJourney = useCallback((direction) => skipRef.current?.(direction), []);
+
+    return { scrollToStep, skipJourney };
 }
 
 function easeInOutCubic(t) {

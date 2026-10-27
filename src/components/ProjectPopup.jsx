@@ -1,6 +1,6 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { FaFirefoxBrowser } from 'react-icons/fa';
+import { FaFilePdf, FaFirefoxBrowser } from 'react-icons/fa';
 
 const ZOOM_TIME = 480;
 const CONTENT_FADE_TIME = 180;
@@ -32,7 +32,8 @@ export default function ProjectPopup({ project, number, sourceElement, onClosed 
     const isClosingRef = useRef(false);
     const [frame, setFrame] = useState(getPanelFrame);
     const zoomTime = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : ZOOM_TIME;
-    const { title, description, image, youtube, href, details = {} } = project;
+    const { title, description, image, youtube, videos = [], href, details = {} } = project;
+    const [videoIndex, setVideoIndex] = useState(0);
     const { category, role, timeline, overview = [], highlights = [], tech = [], demo, gallery, kicker = true, extraLinks = [] } = details;
 
     useLayoutEffect(() => {
@@ -108,7 +109,31 @@ export default function ProjectPopup({ project, number, sourceElement, onClosed 
                                 allowFullScreen
                             />
                         </div>
-                        : <div className="project-detail-media">
+                        : videos.length > 0
+                        ? <div className="project-detail-media project-detail-video project-detail-player">
+                            {videos.length > 1 && <div className="project-detail-video-tabs" role="tablist" aria-label={`${title} videos`}>
+                                {videos.map((video, index) => <button
+                                    key={video.src}
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={index === videoIndex}
+                                    className="project-detail-video-tab"
+                                    onClick={() => setVideoIndex(index)}
+                                >
+                                    {video.label}
+                                </button>)}
+                            </div>}
+                            {/* Keyed so switching tabs loads the other file from the start. */}
+                            <video
+                                key={videos[videoIndex].src}
+                                src={videos[videoIndex].src}
+                                aria-label={`${title}: ${videos[videoIndex].label}`}
+                                controls
+                                playsInline
+                                preload="metadata"
+                            />
+                        </div>
+                        : <div className={image ? 'project-detail-media project-detail-media--image' : 'project-detail-media'}>
                             {image
                                 ? <img src={image} alt={title} />
                                 : <div className="project-video-placeholder" role="img" aria-label={`${title} video placeholder`}><span>Video placeholder</span></div>}
@@ -146,6 +171,7 @@ export default function ProjectPopup({ project, number, sourceElement, onClosed 
                                 </a>}
                                 {extraLinks.map((link) => <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className="project-detail-link project-detail-link--secondary">
                                     {link.icon === 'firefox' && <FaFirefoxBrowser aria-hidden="true" focusable="false" />}
+                                    {link.icon === 'paper' && <FaFilePdf aria-hidden="true" focusable="false" />}
                                     {link.label}
                                 </a>)}
                                 {demo && <a href={demo} target="_blank" rel="noopener noreferrer" className="project-detail-link project-detail-link--secondary">Live demo</a>}

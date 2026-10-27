@@ -2,6 +2,9 @@ import postureImage from '../../Bioshockimage.jpg';
 import resumePdf from '../../Arya_Acharya.pdf';
 import miniplayerGif from '../assets/projects/MiniplayerDiscord.gif';
 import discordExtendedGif from '../assets/projects/DiscordExtended.gif';
+import sortDemoVideo from '../assets/projects/SortDemo.mp4';
+import searchDemoVideo from '../assets/projects/SearchDemo.mp4';
+import researchPaperPdf from '../assets/projects/Arya_Acharya_Research_Paper.pdf';
 import yakuzaKiwami2Cover from '../assets/about/games/yakuza-kiwami-2.jpg';
 import kingdomComeCover from '../assets/about/games/kingdom-come-deliverance.jpg';
 import portal2Cover from '../assets/about/games/portal-2.jpg';
@@ -131,6 +134,7 @@ export const experience = [
 // `details` feeds the project popup; any field left out is simply not shown. `details.gallery`
 // replaces the popup's single image with several, side by side (width/height set their proportions).
 // `youtube` (a video id) shows the video's thumbnail on the page and plays it in the popup.
+// `videos` (local files, each with a label) preview the first on the page; the popup plays them, with a tab per video.
 // `details.kicker: false` hides the "Project 0N · category" line; `details.extraLinks` adds buttons
 // after View on GitHub.
 export const projects = [
@@ -167,7 +171,7 @@ export const projects = [
         youtube: '-iHyOAHc6VM',
         href: 'https://github.com/AryaKenway/JoPolik-The-Super-Experience',
         details: {
-            category: 'Educational game · Unity',
+            kicker: false,
             overview: [
                 'This project is a hybrid 2D-3D educational game built in Unity, combining platforming, exploration, and problem-solving.',
                 'The first level features a 2D platformer with animations, surface effectors, and NPC interactions, ending with a DSA challenge that unlocks progression. The second level shifts into a 3D apartment environment, surrounded by procedurally generated worlds, where players solve another DSA question to earn rewards. Multiplayer functionality is powered by Photon PUN, enabling seamless real-time interaction and cooperative play.'
@@ -180,14 +184,38 @@ export const projects = [
             ]
         }
     },
-    { title: 'Project 03 - Title Placeholder', description: 'Project description placeholder.', videoPlaceholder: true },
+    {
+        title: 'VSS - Visualization of Search & Sort',
+        description: 'An Android app that animates sorting and searching algorithms step by step, with live performance stats.',
+        videos: [
+            { src: sortDemoVideo, label: 'Sorting demo' },
+            { src: searchDemoVideo, label: 'Searching demo' }
+        ],
+        href: 'https://github.com/AryaKenway/VSS-Visualization-of-Search-and-Sort',
+        details: {
+            kicker: false,
+            overview: [
+                'Sorting and searching are easy to memorise and hard to picture. VSS turns them into something you can watch: every value is a bar, and each comparison, swap and probe is animated as it happens.',
+                'It covers Radix, Merge and Tree Sort alongside Linear, Jump and Tree Search. While an algorithm runs, the app reports its execution time, memory use and operation count, plays each value as a pitch so you can hear the data settle into order, and can explain the algorithm aloud with text-to-speech.'
+            ],
+            highlights: [
+                'Animated bar visualisations of 3 sorting and 3 searching algorithms',
+                'Live metrics: execution time (ms), memory (KB) and operation count',
+                'Sound mapping that turns values into pitches as the algorithm runs',
+                'Text-to-speech walkthroughs of how each algorithm works'
+            ],
+            extraLinks: [
+                { label: 'Read the research paper', href: researchPaperPdf, icon: 'paper' }
+            ]
+        }
+    },
     {
         title: 'Bioshock III - Posture Monitoring',
         description: 'Real-time posture monitoring using IMU + live dashboard.',
         image: postureImage,
         href: 'https://github.com/AryaKenway/Bioshock-III-Smart-Posture-Monitor',
         details: {
-            category: 'Wearable · Health tech',
+            kicker: false,
             overview: [
                 'A wearable that tracks posture in real time with an IMU sensor and streams the readings to a live dashboard.',
                 'Overview placeholder: the problem, your approach, and the outcome.'
