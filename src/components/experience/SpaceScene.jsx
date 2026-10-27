@@ -351,8 +351,8 @@ export function SpaceScene({ active, reducedMotion, profile, ...scene }) {
                 gl={{ antialias: true, alpha: true, powerPreference: 'low-power' }}
                 frameloop={active ? 'always' : 'never'}
             >
-                {/* No stars of its own: the canvas is transparent and the stage's space tint is
-                    the projects box's, so the site's night sky shows through exactly as it does there. */}
+                {/* No stars of its own: the canvas and the stage are transparent in space, so the
+                    site's night sky shows through exactly as it does around the stage. */}
                 <SpaceDirector {...scene} rocketRef={rocketRef} spin={!reducedMotion} />
             </Canvas>
             <div className={styles.rocket} ref={rocketRef}>

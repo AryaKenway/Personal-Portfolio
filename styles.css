@@ -1136,8 +1136,10 @@ a:hover {
     padding: clamp(1.25rem, 4vw, 2.5rem);
     border: 1px solid var(--line);
     border-radius: 0.25rem;
-    /* No backdrop-filter here: it would trap the fixed project popup inside the zone. */
-    background: rgb(22 20 15 / 0.62);
+    /* Transparent, like the Experience stage in space: the site sky shows through unchanged, so
+       inside and outside the border are the same colour. (No backdrop-filter either: it would trap
+       the fixed project popup inside the zone.) */
+    background: transparent;
     color: var(--ink);
 }
 

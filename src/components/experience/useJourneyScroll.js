@@ -97,10 +97,10 @@ function legMapping(stepCount) {
     };
 }
 
-/** Stage background: the map's grass, then deep space on the last leg. Space is the projects
- * box's translucent tint (`.project-zone`) over the site sky, so both show the same space. */
+/** Stage background: the map's grass, then deep space on the last leg. Space is fully
+ * transparent, so the stage shows exactly the site sky around it (any tint would shift its colour). */
 const GROUND_COLOR = '#a5c73f';
-const SPACE_COLOR = 'rgba(22, 20, 15, 0.62)';
+const SPACE_COLOR = 'rgba(22, 20, 15, 0)';
 
 /** Wheel events further apart than this start a new gesture. */
 const WHEEL_GESTURE_GAP_MS = 200;
@@ -396,7 +396,9 @@ export function useJourneyScroll({
                 opacity: 0,
                 duration: LEAVE_FADE_SECONDS,
                 ease: 'power1.in',
-                overwrite: true,
+                // 'auto', not true: true kills every tween of the stage, including the timeline's
+                // grass → space background, which then stays grass green at the finale.
+                overwrite: 'auto',
                 onComplete() {
                     skipping = true;
                     jump(jumpTo);
