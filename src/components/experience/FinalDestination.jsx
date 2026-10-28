@@ -40,7 +40,7 @@ export function FinaleCard() {
         <m.article className={`${styles.card} ${styles.finaleCard}`} {...CARD_MOTION}>
             <p className={styles.organization}>Next stop</p>
             <h3 className={styles.role}>Could be your organization!</h3>
-            <p className={styles.finaleText}>The route keeps going. If you have a team I could join, let&apos;s plan the next leg.</p>
+            <p className={styles.finaleText}>This journey has been about learning. Along the way I&apos;ve made an impact, and I&apos;m ready to make the next one with your team.</p>
             <p className={styles.finaleLinks}>
                 <a href={`mailto:${profile.email}`}><Mail aria-hidden="true" size={15} />Email me</a>
                 <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span></a>
