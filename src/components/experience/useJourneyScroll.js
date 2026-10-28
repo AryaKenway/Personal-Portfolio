@@ -17,7 +17,8 @@
  *   so momentum can't carry on scrolling.
  * Touch follows the same rule: a swipe on the map scrubs natively, a swipe that starts
  * outside it (the skip strips above and below the map on touch screens, the margins) leaves
- * the journey.
+ * the journey. On touch screens a sideways swipe on the map scrubs it too (right to left =
+ * forward), by moving the same page scroll.
  * Keyboard and the scrollbar scrub natively.
  *
  * Steps: 0..n-1 are the stops, n is the open final destination.
@@ -47,6 +48,14 @@ const LEAVE_GLIDE_SECONDS = 0.6;
 const LEAVE_RUNUP_VH = 0.3;
 /** How far (px) a touch outside the map must travel vertically before it leaves the journey. */
 const TOUCH_LEAVE_PX = 12;
+/**
+ * Touch screens: a sideways swipe on the map scrubs the journey too. A swipe is sideways once it
+ * has moved `SWIPE_LOCK_PX` mostly horizontally; one map width of swipe is one step. On release
+ * it carries on for `SWIPE_FLING_SECONDS` worth of its speed, gliding to rest.
+ */
+const SWIPE_LOCK_PX = 10;
+const SWIPE_FLING_SECONDS = 0.25;
+const SWIPE_GLIDE_SECONDS = 0.6;
 
 /**
  * Flight profile of one hop, in fractions of the hop (each hop lasts 1 timeline unit and
@@ -463,6 +472,61 @@ export function useJourneyScroll({
         window.addEventListener('touchmove', onTouchMove, { passive: false });
         window.addEventListener('touchend', onTouchEnd);
         window.addEventListener('touchcancel', onTouchEnd);
+
+        // Touch screens: a sideways swipe on the map scrubs the journey as well (right to left =
+        // forward, like a carousel). It moves the page's scroll, so the plane, rocket and cards
+        // follow exactly as they do for vertical scrolling. Vertical swipes stay native: each
+        // swipe is locked to one axis once it has moved far enough to tell.
+        const scrollPerStep = () => window.innerHeight * STEP_SCROLL_VH;
+        const clampToJourney = (y) => Math.min(trigger.end, Math.max(trigger.start, y));
+        const scrubTo = (y, glide) => {
+            const lenis = lenisRef.current;
+            if (lenis) lenis.scrollTo(y, glide ? { duration: SWIPE_GLIDE_SECONDS, easing: easeOutCubic, force: true } : { immediate: true, force: true });
+            else window.scrollTo({ top: y, behavior: glide && !reducedMotion ? 'smooth' : 'instant' });
+        };
+        let sideways = null;
+        // Inside the pinned stretch (checked against the scroll itself, inclusive of both ends,
+        // so a swipe works from the very first stop and back from the finale).
+        const inJourney = () => window.scrollY >= trigger.start - 1 && window.scrollY <= trigger.end + 1;
+        const onStageTouchStart = (event) => {
+            sideways = inJourney() && event.touches.length === 1
+                ? { x: event.touches[0].clientX, y: event.touches[0].clientY, scroll: window.scrollY, axis: null, samples: [] }
+                : null;
+        };
+        const onStageTouchMove = (event) => {
+            if (!sideways || event.touches.length !== 1) return;
+            const { clientX, clientY } = event.touches[0];
+            const dx = clientX - sideways.x;
+            if (!sideways.axis) {
+                const dy = clientY - sideways.y;
+                if (Math.hypot(dx, dy) < SWIPE_LOCK_PX) return;
+                sideways.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+            }
+            if (sideways.axis !== 'x') return;
+            if (event.cancelable) event.preventDefault();
+            const perPx = scrollPerStep() / stage.clientWidth;
+            scrubTo(clampToJourney(sideways.scroll - dx * perPx), false);            // The last moments of the swipe, for its speed on release.
+            const now = performance.now();
+            sideways.samples.push({ t: now, x: clientX });
+            while (sideways.samples.length > 2 && now - sideways.samples[0].t > 100) sideways.samples.shift();
+        };
+        const onStageTouchEnd = () => {
+            const swipe = sideways;
+            sideways = null;
+            if (swipe?.axis !== 'x' || swipe.samples.length < 2 || reducedMotion) return;
+            const first = swipe.samples[0];
+            const last = swipe.samples[swipe.samples.length - 1];
+            const velocity = (last.x - first.x) / Math.max(1, last.t - first.t); // px per ms
+            const fling = velocity * SWIPE_FLING_SECONDS * 1000 * (scrollPerStep() / stage.clientWidth);
+            if (Math.abs(fling) > 1) scrubTo(clampToJourney(window.scrollY - fling), true);
+        };
+        const swipesSideways = window.matchMedia('(pointer: coarse)').matches;
+        if (swipesSideways) {
+            stage.addEventListener('touchstart', onStageTouchStart, { passive: true });
+            stage.addEventListener('touchmove', onStageTouchMove, { passive: false });
+            stage.addEventListener('touchend', onStageTouchEnd);
+            stage.addEventListener('touchcancel', onStageTouchEnd);
+        }
         skipRef.current = (direction) => {
             if (performance.now() < leavingUntil) return;
             leavingUntil = performance.now() + (LEAVE_FADE_SECONDS + LEAVE_GLIDE_SECONDS) * 1000;
@@ -475,6 +539,12 @@ export function useJourneyScroll({
             window.removeEventListener('touchmove', onTouchMove);
             window.removeEventListener('touchend', onTouchEnd);
             window.removeEventListener('touchcancel', onTouchEnd);
+            if (swipesSideways) {
+                stage.removeEventListener('touchstart', onStageTouchStart);
+                stage.removeEventListener('touchmove', onStageTouchMove);
+                stage.removeEventListener('touchend', onStageTouchEnd);
+                stage.removeEventListener('touchcancel', onStageTouchEnd);
+            }
             skipRef.current = null;
             // Freeze the remembered position before the trigger is killed (kill fires callbacks).
             measuring = true;

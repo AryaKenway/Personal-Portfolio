@@ -3,7 +3,7 @@
  * @description The open-ended last stop, one scroll past the final role.
  * - `FinaleMarker` (on the map): an open, dashed destination ring at the end of
  *   the dashed climb, where the plane parks.
- * - `FinaleCard` (overlay): "Next stop: could be your company!" with the contact links.
+ * - `FinaleCard` (overlay): "Next stop: could be your organization!" with the contact links.
  */
 
 import { m } from 'motion/react';
@@ -28,7 +28,7 @@ export function FinaleMarker({ finale, isArrived, onSelect }) {
             onClick={onSelect}
             onFocus={(event) => { if (event.currentTarget.matches(':focus-visible')) onSelect(); }}
             aria-current={isArrived ? 'step' : undefined}
-            aria-label="Next stop: could be your company"
+            aria-label="Next stop: could be your organization"
         >
             <span className={styles.finaleRing} aria-hidden="true" />
         </button>
@@ -39,7 +39,7 @@ export function FinaleCard() {
     return (
         <m.article className={`${styles.card} ${styles.finaleCard}`} {...CARD_MOTION}>
             <p className={styles.organization}>Next stop</p>
-            <h3 className={styles.role}>Could be your company!</h3>
+            <h3 className={styles.role}>Could be your organization!</h3>
             <p className={styles.finaleText}>The route keeps going. If you have a team I could join, let&apos;s plan the next leg.</p>
             <p className={styles.finaleLinks}>
                 <a href={`mailto:${profile.email}`}><Mail aria-hidden="true" size={15} />Email me</a>

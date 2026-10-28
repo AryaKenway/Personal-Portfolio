@@ -143,7 +143,7 @@ export const DISTRICTS = Object.freeze({
         ],
         lane: { x: 14 }
     },
-    // The open plot past the last stop, waiting for "your company".
+    // The open plot past the last stop, waiting for "your organization".
     finale: {
         objects: [
             { sprite: 'ropeFence', x: -4, y: 4 },

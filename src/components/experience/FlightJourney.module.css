@@ -73,6 +73,14 @@
     text-shadow: none;
 }
 
+/* Touch screens: the browser only pans vertically (and zooms) on the map; sideways swipes are
+   the journey's own (useJourneyScroll scrubs with them). */
+@media (pointer: coarse) {
+    .stage {
+        touch-action: pan-y pinch-zoom;
+    }
+}
+
 .scaler {
     position: absolute;
     top: 0;

@@ -61,9 +61,7 @@ function stopPageTurn(audio) {
 const CoverPage = forwardRef(function CoverPage({ isBack = false }, ref) {
     return <div className={`project-flip-page project-cover ${isBack ? 'project-cover-back' : 'project-cover-front'}`} ref={ref}>
         <div className="project-cover-content">
-            {!isBack && <span className="project-cover-label">PORTFOLIO • SELECTED WORKS</span>}
             <h3>{isBack ? 'Thanks for reading.' : 'Project Showcases'}</h3>
-            {!isBack && <span className="project-cover-author">Arya Acharya · 2026</span>}
         </div>
     </div>;
 });

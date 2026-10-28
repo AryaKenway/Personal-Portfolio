@@ -30,6 +30,13 @@ html {
     background: var(--sky);
 }
 
+/* Nothing may widen the page sideways (a swiped game card, the moonwalker leaving the screen).
+   clip, not hidden: no scroll container, so pinning and fixed layers work as before. Clipping at
+   the full-width root lets things run right up to the screen's edges. */
+#root {
+    overflow-x: clip;
+}
+
 /* Transparent so the fixed sky behind it shows through. */
 body {
     min-height: 100vh;
@@ -220,8 +227,6 @@ a:hover {
 .about-section {
     grid-template-columns: minmax(0, 1fr);
     row-gap: 1rem;
-    /* A swiped game card can slide past the edge on small phones; never let it scroll the page. */
-    overflow-x: clip;
 }
 
 .about-body {
@@ -231,8 +236,12 @@ a:hover {
     column-gap: clamp(2rem, 6vw, 5rem);
 }
 
+/* A column as tall as the row, so the moonwalker's stage fills the space under the text. */
 .about-copy {
+    display: flex;
     max-width: 42rem;
+    align-self: stretch;
+    flex-direction: column;
 }
 
 @media (max-width: 47.99rem) {
@@ -454,24 +463,11 @@ a:hover {
     gap: 18px;
 }
 
-.project-cover-label {
-    color: #ddc38f;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-}
-
 .project-cover h3 {
     margin: 0;
     font-family: var(--sans);
     font-size: clamp(2rem, 5vw, 3.25rem);
     line-height: 1.1;
-}
-
-.project-cover-author {
-    color: #d9d1c0;
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
 }
 
 .project-book .project-flip-content {

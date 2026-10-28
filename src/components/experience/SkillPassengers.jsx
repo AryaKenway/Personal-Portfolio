@@ -82,7 +82,7 @@ export function PickedUpPasses({ skills, step, boardTimes = [] }) {
 
     return (
         <div className={styles.manifest}>
-            <p className={styles.manifestLabel}>Picked up here</p>
+            <p className={styles.manifestLabel}>Skills picked up here</p>
             <ul className={styles.passes}>
                 {skills.map((skill, index) => (
                     <m.li

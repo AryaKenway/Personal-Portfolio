@@ -1,0 +1,74 @@
+/* Fills the empty space under the About text; everyone stands on its bottom edge. */
+.stage {
+    position: relative;
+    flex: 1 0 auto;
+    min-height: 12.5rem;
+    margin-top: 1.5rem;
+    pointer-events: none;
+}
+
+/* A character, moved along by AboutScene.jsx (translate only). Michael Jackson fades back in
+   when he returns; Chell is clipped as she crosses a portal. */
+.actor {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transition: opacity 600ms ease;
+    will-change: transform;
+}
+
+.actor[data-gone] {
+    opacity: 0;
+    transition: none;
+}
+
+.sprite {
+    position: relative;
+    display: block;
+    image-rendering: pixelated;
+}
+
+/* Chell and the robot are drawn facing right; they head left. */
+.mirrored {
+    transform: scaleX(-1);
+}
+
+/* A soft spotlight on the floor under their feet. */
+.spot {
+    position: absolute;
+    bottom: -0.4rem;
+    left: 50%;
+    width: 150%;
+    height: 1.4rem;
+    background: radial-gradient(closest-side, rgb(255 236 210 / 0.22), transparent);
+    translate: -50% 0;
+}
+
+.portal {
+    position: absolute;
+    left: 0;
+    image-rendering: pixelated;
+}
+
+.portalBlue {
+    filter: drop-shadow(0 0 6px rgb(59 155 255 / 0.85));
+}
+
+.portalOrange {
+    filter: drop-shadow(0 0 6px rgb(255 138 31 / 0.85));
+}
+
+/* The portal gun's shot, flying to where the blue portal opens. */
+.shot {
+    position: absolute;
+    left: 0;
+    background: #c7ecff;
+    box-shadow: 0 0 6px 2px rgb(69 168 255 / 0.9);
+}
+
+@media (max-width: 47.99rem) {
+    .stage {
+        min-height: 9rem;
+        margin-top: 1rem;
+    }
+}

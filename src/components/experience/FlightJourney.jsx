@@ -280,7 +280,7 @@ export function FlightJourney({ milestones }) {
                     <p className={styles.srOnly} aria-live="polite">
                         {showCard && (landedStop
                             ? `Arrived at ${landedStop.milestone.organization}: ${landedStop.milestone.title}, ${landedStop.milestone.period}.`
-                            : 'Next stop: could be your company.')}
+                            : 'Next stop: could be your organization.')}
                     </p>
                 </div>
                 {/* Touch screens: room under the map to leave the journey. Tapping skips to the next
